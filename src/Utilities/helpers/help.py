@@ -624,12 +624,15 @@ def Help_Embed():
         > Spacebot is one of the best multipurpose bots with
         > Fun, Utility, Games, Music, Moderation and Levelling!
     
-        ⚠️ *What's new??* - MUSIC OVERHAUL!!!
+        ⚠️ *What's new??* - MUSIC OVERHAUL AND OPEN-SOURCE!!!
         > Load balancing has been implemented to music. 
         > This means that Spacebot will get your server's registered location and play music in the same country!
 
         > FILTERS - as of right now, there is bassboost, treble, jazz, pop filters. 
             There will be more, but i need a music enthusiast cause i dont understand this
+
+        > Spacebot is now completely open source - If you know a little bit python, consider contributing to the project!
+        https://github.com/Dhravya/Spacebot-discord/issues
 
         Just click on this link to enable Slash commands!! (dsc.gg/spacebt)[https://dsc.gg/spacebt]
         > You can also use the command `.help` to get the help menu.
