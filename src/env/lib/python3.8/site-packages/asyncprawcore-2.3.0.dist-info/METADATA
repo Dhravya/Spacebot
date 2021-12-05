@@ -1,0 +1,152 @@
+Metadata-Version: 2.1
+Name: asyncprawcore
+Version: 2.3.0
+Summary: Low-level asynchronous communication layer for Async PRAW 7+.
+Home-page: https://github.com/praw-dev/asyncprawcore
+Author: LilSpazJoekp,vikramaditya91
+Author-email: lilspazjoekp@gmail.com,vikramaditya91@gmail.com
+License: Simplified BSD License
+Keywords: praw reddit api async
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Requires-Dist: aiohttp
+Requires-Dist: yarl
+Provides-Extra: ci
+Requires-Dist: coveralls ; extra == 'ci'
+Provides-Extra: dev
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: flynt ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: pydocstyle ; extra == 'dev'
+Requires-Dist: asynctest (>=0.13.0) ; extra == 'dev'
+Requires-Dist: mock (>=0.8) ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-vcr ; extra == 'dev'
+Requires-Dist: testfixtures (<7,>4.13.2) ; extra == 'dev'
+Requires-Dist: vcrpy (==4.0.2) ; extra == 'dev'
+Provides-Extra: lint
+Requires-Dist: black ; extra == 'lint'
+Requires-Dist: flake8 ; extra == 'lint'
+Requires-Dist: flynt ; extra == 'lint'
+Requires-Dist: pre-commit ; extra == 'lint'
+Requires-Dist: pydocstyle ; extra == 'lint'
+Provides-Extra: test
+Requires-Dist: asynctest (>=0.13.0) ; extra == 'test'
+Requires-Dist: mock (>=0.8) ; extra == 'test'
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-vcr ; extra == 'test'
+Requires-Dist: testfixtures (<7,>4.13.2) ; extra == 'test'
+Requires-Dist: vcrpy (==4.0.2) ; extra == 'test'
+
+.. _main_page:
+
+asyncprawcore
+=============
+
+.. image:: https://img.shields.io/pypi/v/asyncprawcore.svg
+    :alt: Latest asyncprawcore Version
+    :target: https://pypi.python.org/pypi/asyncprawcore
+
+.. image:: https://img.shields.io/pypi/pyversions/asyncprawcore?branch=main
+    :alt: Supported Python Versions
+    :target: https://pypi.python.org/pypi/asyncprawcore
+
+.. image:: https://coveralls.io/repos/github/praw-dev/asyncprawcore/badge.svg?branch=main
+    :alt: Coveralls Coverage
+    :target: https://coveralls.io/github/praw-dev/asyncprawcore?branch=main
+
+.. image:: https://github.com/praw-dev/asyncprawcore/workflows/CI/badge.svg
+    :alt: Github Actions Coverage
+    :target: https://github.com/praw-dev/asyncprawcore/actions?query=branch%3Amaster
+
+asyncprawcore is a low-level communication layer for PRAW 4+.
+
+Installation
+------------
+
+Install asyncprawcore using ``pip`` via:
+
+.. code-block:: console
+
+    pip install asyncprawcore
+
+Execution Example
+-----------------
+
+The following example demonstrates how to use asyncprawcore to obtain the list of
+trophies for a given user using the script-app type. This example assumes you have the
+environment variables ``asyncprawcore_CLIENT_ID`` and ``asyncprawcore_CLIENT_SECRET``
+set to the appropriate values for your application.
+
+.. code-block:: python
+
+    import os
+    import pprint
+    import asyncio
+    import asyncprawcore
+
+
+    async def main():
+        authenticator = asyncprawcore.TrustedAuthenticator(
+            asyncprawcore.Requestor("YOUR_VALID_USER_AGENT"),
+            os.environ["asyncprawcore_CLIENT_ID"],
+            os.environ["asyncprawcore_CLIENT_SECRET"],
+        )
+        authorizer = asyncprawcore.ReadOnlyAuthorizer(authenticator)
+        await authorizer.refresh()
+
+        async with asyncprawcore.session(authorizer) as session:
+            pprint.pprint(await session.request("GET", "/api/v1/user/bboe/trophies"))
+
+
+    if __name__ == "__main__":
+        loop = asyncio.get_event_loop()
+        loop.run_until_complete(main())
+
+Save the above as ``trophies.py`` and then execute via:
+
+.. code-block:: console
+
+    python trophies.py
+
+Additional examples can be found at:
+https://github.com/praw-dev/asyncprawcore/tree/main/examples
+
+Depending on asyncprawcore
+--------------------------
+
+asyncprawcore follows `semantic versioning <http://semver.org/>`_ with the exception
+that deprecations will not be preceded by a minor release. In essence, expect only major
+versions to introduce breaking changes to asyncprawcore's public interface. As a result,
+if you depend on asyncprawcore then it is a good idea to specify not only the minimum
+version of asyncprawcore your package requires, but to also limit the major version.
+
+Below are two examples of how you may want to specify your asyncprawcore dependency:
+
+setup.py
+~~~~~~~~
+
+.. code-block:: python
+
+    setup(..., install_requires=["asyncprawcore >=0.1, <1"], ...)
+
+requirements.txt
+~~~~~~~~~~~~~~~~
+
+.. code-block:: text
+
+    asyncprawcore >=1.5.1, <2
+
+

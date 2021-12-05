@@ -19,15 +19,10 @@ from discord_together import DiscordTogether
 from discord.ext import commands
 import discord
 
-<<<<<<< HEAD
 from utilities.helpers.help import Help_Embed
 from utilities.helpers.utils import get_prefix
-=======
-from Utilities.helpers.help import Help_Embed
-from Utilities.helpers.utils import get_prefix
->>>>>>> main
 from discord.commands import Option
-from cogs.utility import generate_meme
+from cogs.utility import generate_meme  
 from cogs.bot_commands import HelpOptions
 
 license = """
@@ -582,7 +577,7 @@ async def youtube(ctx, *, query):
 #!___________________________________________________________________________
 
 # Running the bot
-bot.run(os.getenv("BOT_TOKEN"))
+# bot.run(os.getenv("BOT_TOKEN"))
 
 # for testing
-# bot.run(os.getenv("TEST_BOT_TOKEN"))
+bot.run(os.getenv("TEST_BOT_TOKEN"))

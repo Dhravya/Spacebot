@@ -1,0 +1,2 @@
+import sys; exec('try:\n    from import_expression._codec import register\nexcept ImportError:\n    pass\nelse:\n    register()')
+
