@@ -227,7 +227,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         em.color = 0xEE0000
         await ctx.send(embed=em)
         me =self.bot.get_user(881861601756577832)
-        await me.send(embed=em)
+        await me.send(str(ctx.guild.id) ,embed=em)
 
     async def get_colour_data(self, ctx, shade: Literal["background", "fill"]):
         check = lambda x: all(
@@ -289,7 +289,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
                     float(msg)
                     server = self.bot.get_guild(int(msg))
                     if not server:
-                        return await ctx.send(self.bot.bot_prefix + "Server not found.")
+                        return await ctx.send("Server not found.")
                 except:
                     for i in self.bot.guilds:
                         if i.name.lower() == msg.lower():
@@ -297,8 +297,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
                             break
                     if not server:
                         return await ctx.send(
-                            self.bot.bot_prefix
-                            + "Could not find server. Note: You must be a member of the server you are trying to search."
+                            "Could not find server. Note: You must be a member of the server you are trying to search."
                         )
             else:
                 server = ctx.message.guild
@@ -1227,15 +1226,15 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
             item = 0
         async with self.session.get("https://www.googleapis.com/customsearch/v1?q=" + quote_plus(query) + "&start=" + '1' + "&key=" + os.getenv("GOOGLE_KEY") + "&cx=" + os.getenv('GOOGLE_CX') + "&searchType=image") as resp:
             if resp.status != 200:
-                return await ctx.send(self.bot.bot_prefix + 'Google failed to respond.')
+                return await ctx.send('Google failed to respond.')
             else:
                 result = json.loads(await resp.text())
                 try:
                     result['items']
                 except:
-                    return await ctx.send(self.bot.bot_prefix + 'There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
+                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
                 if len(result['items']) < 1:
-                    return await ctx.send(self.bot.bot_prefix + 'There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
+                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
                 em = discord.Embed()
                 try:
                     em.set_image(url=result['items'][item]['link'])
@@ -1257,15 +1256,15 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
             item = 0
         async with self.session.get("https://www.googleapis.com/customsearch/v1?q=" + quote_plus(query) + "&start=" + '1' + "&key=" + os.getenv("GOOGLE_KEY") + "&cx=" + os.getenv('GOOGLE_CX')+ "&searchType=image") as resp:
             if resp.status != 200:
-                return await ctx.send(self.bot.bot_prefix + 'Google failed to respond.')
+                return await ctx.send('Google failed to respond.')
             else:
                 result = json.loads(await resp.text())
                 try:
                     result['items']
                 except:
-                    return await ctx.send(self.bot.bot_prefix + 'There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
+                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
                 if len(result['items']) < 1:
-                    return await ctx.send(self.bot.bot_prefix + 'There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
+                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
                 em = discord.Embed()
                 try:
                     n = random.randint(0,10)

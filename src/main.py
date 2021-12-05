@@ -577,7 +577,7 @@ async def youtube(ctx, *, query):
 #!___________________________________________________________________________
 
 # Running the bot
-# bot.run(os.getenv("BOT_TOKEN"))
+bot.run(os.getenv("BOT_TOKEN"))
 
 # for testing
-bot.run(os.getenv("TEST_BOT_TOKEN"))
+# bot.run(os.getenv("TEST_BOT_TOKEN"))
