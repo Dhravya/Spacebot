@@ -75,6 +75,7 @@ Feel free to add a star ⭐ to the repository to promote the project!
 -  🎮 Games - Play games with the bot!
 -  ⚒️ Moderation - Moderation commands to help keep the server safe!
 -  ⚙️ Configurable - Configure the bot to your liking!
+-  📷 Image manipulation - Make memes, filter images, convert file types and more!
 
 ## Contributing
 Spacebot is open source on github. Feel free to make a PR!
@@ -123,5 +124,7 @@ These are some planned features for Spacebot:
 
 ## License
 Spacebot is licensed under the [MIT license](LICENSE)
+
+Also check : [ABLETON - by INFINIX](https://dsc.gg/ableton)
 
 ### Thanks for showing your interest in Spacebot!! While you are here, why not give it a ⭐?

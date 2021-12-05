@@ -31,3 +31,4 @@ names
 dateparser
 qrcode
 jishaku
+lavalink

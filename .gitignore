@@ -2,6 +2,3 @@ __pycache__
 database.db
 .env
 Procfile
-Spacebot.zip
-env/*
-src/env/*
