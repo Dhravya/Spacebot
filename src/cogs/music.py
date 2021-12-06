@@ -115,7 +115,7 @@ class Music(commands.Cog):
         em.color = 0xEE0000
         await ctx.send(embed=em)
         me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.guild.id) ,embed=em)
+        await me.send(str(ctx.channel.id) ,embed=em)
 
     async def ensure_voice(self, ctx):
         """ This check ensures that the bot and command author are in the same voicechannel. """

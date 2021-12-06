@@ -36,7 +36,7 @@ class Fun(
         em.color = 0xEE0000
         await ctx.send(embed=em)
         me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.guild.id) ,embed=em)
+        await me.send(str(ctx.channel.id) ,embed=em)
     @commands.command(
         description="Don't do this. The bot will insult you.", name="talk_rude"
     )
@@ -202,7 +202,7 @@ class Fun(
             "Approximately 10-20% of U.S. power outages are caused by squirrels.",
         ]
 
-        fact_file = open("utilities/Text files/facts.txt", mode="r", encoding="utf8")
+        fact_file = open("utilities/text_data/facts.txt", mode="r", encoding="utf8")
         fact_file_facts = fact_file.read().split("\n")
         fact_file.close()
 
@@ -399,7 +399,7 @@ class Fun(
     @commands.command(name="truth")
     async def truth(self, ctx):
         truth_file = open(
-            "utilities/Text files/truths.txt", mode="r", encoding="utf8"
+            "utilities/text_data/truths.txt", mode="r", encoding="utf8"
         )
         truth_file_facts = truth_file.read().split("\n")
         truth_file.close()
@@ -413,7 +413,7 @@ class Fun(
     async def dare(self, ctx):
 
         dares_file = open(
-            "utilities/Text files/dares.txt", mode="r", encoding="utf8"
+            "utilities/text_data/dares.txt", mode="r", encoding="utf8"
         )
         dares_file_facts = dares_file.read().split("\n")
         dares_file.close()

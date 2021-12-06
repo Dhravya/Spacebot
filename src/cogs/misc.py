@@ -44,7 +44,7 @@ class Misc(Cog):
         em.color = 0xEE0000
         await ctx.send(embed=em)
         me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.guild.id) ,embed=em)
+        await me.send(str(ctx.channel.id) ,embed=em)
 
     async def get_quote(self) -> Tuple[str, str]:
 

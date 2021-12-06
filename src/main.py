@@ -109,7 +109,7 @@ async def on_ready():
     bot.console.print(bot.user.name, style="success")
     bot.console.print(bot.user.id, style="success")
     print("------")
-    await bot.change_presence(activity=discord.Game(name=f"on {len(bot.guilds)} servers, {len(list(bot.get_all_members()))} members. | .help"))
+    await bot.change_presence(status=discord.Status.idle ,activity=discord.Game(name=f"on {len(bot.guilds)} servers, {len(list(bot.get_all_members()))} members. | .help"))
 
 
 # loading cogs

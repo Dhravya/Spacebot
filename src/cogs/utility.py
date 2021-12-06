@@ -227,7 +227,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         em.color = 0xEE0000
         await ctx.send(embed=em)
         me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.guild.id) ,embed=em)
+        await me.send(str(ctx.channel.id) ,embed=em)
 
     async def get_colour_data(self, ctx, shade: Literal["background", "fill"]):
         check = lambda x: all(
