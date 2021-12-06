@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from Utilities.helpers import checks
+from utilities.helpers import checks
 from pytimeparse.timeparse import timeparse
 import json
 
@@ -11,6 +11,16 @@ class Moderation(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    async def cog_command_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
+        em = discord.Embed()
+        em.title = f"Error: {__name__}"
+        em.description = f"{error}"
+        em.color = 0xEE0000
+        await ctx.send(embed=em)
+        me =self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id) ,embed=em)
 
     @checks.can_kick()
     @commands.command()

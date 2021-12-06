@@ -30,9 +30,9 @@ from qrcode.image import styledpil, styles
 import inspect,  operator
 from typing import Literal
 
-from Utilities.helpers import checks
-from Utilities.helpers.qrgenerator import MessagePredicate
-from Utilities.helpers.utils import *
+from utilities.helpers import checks
+from utilities.helpers.qrgenerator import MessagePredicate
+from utilities.helpers.utils import *
 
 full = names.get_full_name
 first = names.get_first_name
@@ -185,7 +185,7 @@ class ColourConverter(commands.ColourConverter):
         else:
             return original_arg
 
-class Utility(commands.Cog, name="Utilities", description="Useful stuff"):
+class Utility(commands.Cog, name="utilities", description="Useful stuff"):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.bot.topggpy = bot.topggpy
@@ -217,6 +217,17 @@ class Utility(commands.Cog, name="Utilities", description="Useful stuff"):
             ret = f'Failed to identify a colour from "{content}" - please start over.'
         finally:
             return ret
+
+    async def cog_command_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
+        em = discord.Embed()
+        em.title = f"Error: {__name__}"
+        em.description = f"{error}"
+        em.color = 0xEE0000
+        await ctx.send(embed=em)
+        me =self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id) ,embed=em)
 
     async def get_colour_data(self, ctx, shade: Literal["background", "fill"]):
         check = lambda x: all(
@@ -278,7 +289,7 @@ class Utility(commands.Cog, name="Utilities", description="Useful stuff"):
                     float(msg)
                     server = self.bot.get_guild(int(msg))
                     if not server:
-                        return await ctx.send(self.bot.bot_prefix + "Server not found.")
+                        return await ctx.send("Server not found.")
                 except:
                     for i in self.bot.guilds:
                         if i.name.lower() == msg.lower():
@@ -286,8 +297,7 @@ class Utility(commands.Cog, name="Utilities", description="Useful stuff"):
                             break
                     if not server:
                         return await ctx.send(
-                            self.bot.bot_prefix
-                            + "Could not find server. Note: You must be a member of the server you are trying to search."
+                            "Could not find server. Note: You must be a member of the server you are trying to search."
                         )
             else:
                 server = ctx.message.guild
@@ -1216,15 +1226,15 @@ class Utility(commands.Cog, name="Utilities", description="Useful stuff"):
             item = 0
         async with self.session.get("https://www.googleapis.com/customsearch/v1?q=" + quote_plus(query) + "&start=" + '1' + "&key=" + os.getenv("GOOGLE_KEY") + "&cx=" + os.getenv('GOOGLE_CX') + "&searchType=image") as resp:
             if resp.status != 200:
-                return await ctx.send(self.bot.bot_prefix + 'Google failed to respond.')
+                return await ctx.send('Google failed to respond.')
             else:
                 result = json.loads(await resp.text())
                 try:
                     result['items']
                 except:
-                    return await ctx.send(self.bot.bot_prefix + 'There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
+                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
                 if len(result['items']) < 1:
-                    return await ctx.send(self.bot.bot_prefix + 'There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
+                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
                 em = discord.Embed()
                 try:
                     em.set_image(url=result['items'][item]['link'])
@@ -1246,15 +1256,15 @@ class Utility(commands.Cog, name="Utilities", description="Useful stuff"):
             item = 0
         async with self.session.get("https://www.googleapis.com/customsearch/v1?q=" + quote_plus(query) + "&start=" + '1' + "&key=" + os.getenv("GOOGLE_KEY") + "&cx=" + os.getenv('GOOGLE_CX')+ "&searchType=image") as resp:
             if resp.status != 200:
-                return await ctx.send(self.bot.bot_prefix + 'Google failed to respond.')
+                return await ctx.send('Google failed to respond.')
             else:
                 result = json.loads(await resp.text())
                 try:
                     result['items']
                 except:
-                    return await ctx.send(self.bot.bot_prefix + 'There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
+                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
                 if len(result['items']) < 1:
-                    return await ctx.send(self.bot.bot_prefix + 'There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
+                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
                 em = discord.Embed()
                 try:
                     n = random.randint(0,10)
@@ -1429,15 +1439,15 @@ class Utility(commands.Cog, name="Utilities", description="Useful stuff"):
 
         audio = url.replace("DASH_240.mp4","DASH_audio.mp4")
         await ctx.send(audio)
-        urllib.request.urlretrieve(audio, r".\Utilities\photos\temp\audio.mp4")
-        urllib.request.urlretrieve(url, r".\Utilities\photos\temp\video.mp4")
+        urllib.request.urlretrieve(audio, r".\utilities\photos\temp\audio.mp4")
+        urllib.request.urlretrieve(url, r".\utilities\photos\temp\video.mp4")
 
         try:
-            cmd = "ffmpeg -i ./Utilities/photos/temp/video.mp4 -i ./Utilities/photos/temp/audio.mp4 -c:v copy -c:a aac ./Utilities/photos/temp/output.mp4"
+            cmd = "ffmpeg -i ./utilities/photos/temp/video.mp4 -i ./utilities/photos/temp/audio.mp4 -c:v copy -c:a aac ./utilities/photos/temp/output.mp4"
             os.system(cmd)
             await ctx.send("Your request has been queued. This will take 20 seconds. Chillax and enjoy.")
             await asyncio.sleep(20)
-            await ctx.send(file=discord.File(r".\Utilities\photos\temp\output.mp4"))
+            await ctx.send(file=discord.File(r".\utilities\photos\temp\output.mp4"))
         except Exception as e:
             print(f"{e.__class__.__name__}:\n{e}")
             await ctx.send("Error: Failed to download video.")

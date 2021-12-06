@@ -1,0 +1,10 @@
+libretranslatepy-2.1.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4
+libretranslatepy-2.1.1.dist-info/LICENSE,sha256=fF1KSXtjRXSX1_BlLo-wY7dRtPnzo1rFiwEKrQaY1-s,1072
+libretranslatepy-2.1.1.dist-info/METADATA,sha256=ZVe3bI9GCIMudvrqJWBsjFGFZ_eUICNbMifVilCBRvs,233
+libretranslatepy-2.1.1.dist-info/RECORD,,
+libretranslatepy-2.1.1.dist-info/WHEEL,sha256=g4nMs7d-Xl9-xC9XovUrsDHGXt-FT0E17Yqo92DEfvY,92
+libretranslatepy-2.1.1.dist-info/top_level.txt,sha256=mi1uF0N7TCWD8gS5DsoHFY5pr8d7aVr-2lorX6u0beI,17
+libretranslatepy/__init__.py,sha256=t0Sg7yklXm5adTuh4fBsvjYEq4uvucz7WQuBNzdW-RU,35
+libretranslatepy/__pycache__/__init__.cpython-38.pyc,,
+libretranslatepy/__pycache__/api.cpython-38.pyc,,
+libretranslatepy/api.py,sha256=vuYcLZbAWKzYXpoa_XrxJIVTiHsc4fEDc4zDIlwatCU,2829

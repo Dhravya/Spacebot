@@ -1,0 +1,21 @@
+Metadata-Version: 2.0
+Name: silly
+Version: 1.1.0
+Summary: A test data generator that generates stupid names. Like faker, but... silly
+Home-page: https://github.com/classam/silly
+Author: Curtis Lassam
+Author-email: curtis@lassam.net
+License: MIT
+Requires-Dist: inflect
+Requires-Dist: six
+Provides-Extra: dev
+Requires-Dist: invoke; extra == 'dev'
+Requires-Dist: setuptools; extra == 'dev'
+Requires-Dist: twine; extra == 'dev'
+Requires-Dist: wheel; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: nose; extra == 'test'
+
+# silly
+
+

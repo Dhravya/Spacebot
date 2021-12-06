@@ -1,8 +1,8 @@
 import discord
 import time, datetime, os
 from discord.ext import commands
-from Utilities.helpers.utils import Invite
-from Utilities.helpers.help import Help_Embed, cog_help
+from utilities.helpers.utils import Invite
+from utilities.helpers.help import Help_Embed, cog_help
 import asyncio
 
 class HelpEmbed(discord.Embed):
@@ -28,7 +28,7 @@ class HelpOptions(discord.ui.View):
     @discord.ui.select(placeholder = 'Select a Command Category', min_values = 1, max_values = 1, options = [
         discord.SelectOption(label = "Config", description = "Configure your bot", emoji="🔧"),
         discord.SelectOption(label = 'Music and Moderation commands', description = 'Music and moderation commands!!', emoji = '🎶'),
-        discord.SelectOption(label = 'Utility', description = 'Utilities like translate, convert, and more!', emoji = '⚙️'),
+        discord.SelectOption(label = 'Utility', description = 'utilities like translate, convert, and more!', emoji = '⚙️'),
         discord.SelectOption(label = 'Fun', description = 'This includes Fun Commands like AI and slap', emoji = '🎠'),
         discord.SelectOption(label = 'Games and Miscellaneous', description =  'Fun Games and Miscellaneous commands!!', emoji = '🎭'),
         discord.SelectOption(label = 'Bot Commands', description = 'Retrieves info about the user or the server', emoji = '❓'),        
@@ -91,6 +91,17 @@ class BotCommands(commands.Cog):
     async def on_ready(self):
         
         print("yo done")
+
+    async def cog_command_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
+        em = discord.Embed()
+        em.title = f"Error: {__name__}"
+        em.description = f"{error}"
+        em.color = 0xEE0000
+        await ctx.send(embed=em)
+        me =self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id) ,embed=em)
 
     @commands.command()
     async def dev(self,ctx):

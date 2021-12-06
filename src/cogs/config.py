@@ -52,7 +52,17 @@ class Config(commands.Cog):
 
                                             FOREIGN KEY(guild_id) REFERENCES Servers(id))""")
 
-
+    # on error, send the error as an embed
+    async def cog_command_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
+        em = discord.Embed()
+        em.title = f"Error: {__name__}"
+        em.description = f"{error}"
+        em.color = 0xEE0000
+        await ctx.send(embed=em)
+        me =self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id) ,embed=em)
 
     @commands.command()
     @commands.has_permissions(ban_members=True)

@@ -4,7 +4,7 @@ import asyncio
 import itertools
 import random
 from typing import List
-from Utilities.Games import twenty, hangman
+from utilities.games import twenty, hangman
 
 
 class TicTacToeButton(discord.ui.Button["TicTacToe"]):
@@ -114,6 +114,17 @@ class Games(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+
+    async def cog_command_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
+        em = discord.Embed()
+        em.title = f"Error: {__name__}"
+        em.description = f"{error}"
+        em.color = 0xEE0000
+        await ctx.send(embed=em)
+        me =self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id) ,embed=em)
 
     @commands.command(name="connect4")
     async def connect4(self, ctx: commands.Context, opponent="", width=7, height=6):

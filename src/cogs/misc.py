@@ -35,6 +35,16 @@ class Misc(Cog):
         self.link = {}  # userid -> {target id, target user channel}
         self.colour = 0xAAAAAA
 
+    async def cog_command_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
+        em = discord.Embed()
+        em.title = f"Error: {__name__}"
+        em.description = f"{error}"
+        em.color = 0xEE0000
+        await ctx.send(embed=em)
+        me =self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id) ,embed=em)
 
     async def get_quote(self) -> Tuple[str, str]:
 
@@ -46,7 +56,7 @@ class Misc(Cog):
     def font(self) -> ImageFont:
         if self._font is None:
             self._font = ImageFont.truetype(
-                f"Utilities/Menlo.ttf", encoding="unic"
+                f"utilities/Menlo.ttf", encoding="unic"
             )
         return self._font
 

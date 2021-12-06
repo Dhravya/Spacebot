@@ -8,8 +8,8 @@ import akinator as ak
 from typing import Optional
 from random import choice
 
-from Utilities.helpers.utils import random_percentage, Votelink, voteembed
-from Utilities.helpers.help import FACES
+from utilities.helpers.utils import random_percentage, Votelink, voteembed
+from utilities.helpers.help import FACES
 
 api_link = "https://evilinsult.com/generate_insult.php?lang=en&type=txt"
 urlaco = "https://acobot-brainshop-ai-v1.p.rapidapi.com/get"
@@ -27,7 +27,16 @@ class Fun(
     def check_voted(self, userid):
         return self.bot.topggpy.get_user_vote(userid)
 
-
+    async def cog_command_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
+        em = discord.Embed()
+        em.title = f"Error: {__name__}"
+        em.description = f"{error}"
+        em.color = 0xEE0000
+        await ctx.send(embed=em)
+        me =self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id) ,embed=em)
     @commands.command(
         description="Don't do this. The bot will insult you.", name="talk_rude"
     )
@@ -193,7 +202,7 @@ class Fun(
             "Approximately 10-20% of U.S. power outages are caused by squirrels.",
         ]
 
-        fact_file = open("Utilities/Text files/facts.txt", mode="r", encoding="utf8")
+        fact_file = open("utilities/text_data/facts.txt", mode="r", encoding="utf8")
         fact_file_facts = fact_file.read().split("\n")
         fact_file.close()
 
@@ -390,7 +399,7 @@ class Fun(
     @commands.command(name="truth")
     async def truth(self, ctx):
         truth_file = open(
-            "Utilities/Text files/truths.txt", mode="r", encoding="utf8"
+            "utilities/text_data/truths.txt", mode="r", encoding="utf8"
         )
         truth_file_facts = truth_file.read().split("\n")
         truth_file.close()
@@ -404,7 +413,7 @@ class Fun(
     async def dare(self, ctx):
 
         dares_file = open(
-            "Utilities/Text files/dares.txt", mode="r", encoding="utf8"
+            "utilities/text_data/dares.txt", mode="r", encoding="utf8"
         )
         dares_file_facts = dares_file.read().split("\n")
         dares_file.close()

@@ -1,0 +1,5 @@
+[console_scripts]
+import-expression = import_expression.__main__:main
+import-expression-rewrite = import_expression._main2:main
+import_expression = import_expression.__main__:main
+

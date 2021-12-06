@@ -19,10 +19,10 @@ from discord_together import DiscordTogether
 from discord.ext import commands
 import discord
 
-from Utilities.helpers.help import Help_Embed
-from Utilities.helpers.utils import get_prefix
+from utilities.helpers.help import Help_Embed
+from utilities.helpers.utils import get_prefix
 from discord.commands import Option
-from cogs.utility import generate_meme
+from cogs.utility import generate_meme  
 from cogs.bot_commands import HelpOptions
 
 license = """
@@ -109,7 +109,7 @@ async def on_ready():
     bot.console.print(bot.user.name, style="success")
     bot.console.print(bot.user.id, style="success")
     print("------")
-    await bot.change_presence(activity=discord.Game(name=f"on {len(bot.guilds)} servers, {len(list(bot.get_all_members()))} members. | .help"))
+    await bot.change_presence(status=discord.Status.idle ,activity=discord.Game(name=f"on {len(bot.guilds)} servers, {len(list(bot.get_all_members()))} members. | .help"))
 
 
 # loading cogs

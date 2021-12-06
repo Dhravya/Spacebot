@@ -3,7 +3,7 @@ from discord.ext import commands
 from PIL import Image, ImageDraw
 from io import BytesIO
 import requests
-from Utilities.helpers.utils import Votelink, voteembed
+from utilities.helpers.utils import Votelink, voteembed
 from PIL import ImageOps
 
 import pyimgur
@@ -20,12 +20,22 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
     def check_voted(self, userid):
         return self.bot.topggpy.get_user_vote(userid)
 
+    async def cog_command_error(
+        self, ctx: commands.Context, error: commands.CommandError
+    ):
+        em = discord.Embed()
+        em.title = f"Error: {__name__}"
+        em.description = f"{error}"
+        em.color = 0xEE0000
+        await ctx.send(embed=em)
+        me =self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id) ,embed=em)
 
     @commands.command()
     async def wanted(self, ctx, user: discord.Member = None):
         user = ctx.author if not user else user
 
-        wanted = Image.open("Utilities/photos/wanted.jpg")
+        wanted = Image.open("utilities/photos/wanted.jpg")
         asset = user.avatar.with_format("jpg")
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
@@ -41,7 +51,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
     @commands.command()
     async def kill(self, ctx, user: discord.Member = None):
         user = ctx.author if not user else user
-        amogusimage = Image.open(f"Utilities/photos/kill2.jfif")
+        amogusimage = Image.open(f"utilities/photos/kill2.jfif")
         asset1 = user.avatar.with_format("jpg")
         asset2 = ctx.author.avatar.with_format("jpg")
         data1 = BytesIO(await asset1.read())
@@ -64,7 +74,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
     async def disfine(self, ctx, user: discord.Member = None):
         user = ctx.author if not user else user
 
-        wanted = Image.open("Utilities/photos/finelol.jpeg")
+        wanted = Image.open("utilities/photos/finelol.jpeg")
         asset = user.avatar.with_format("jpg")
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
@@ -81,7 +91,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
     async def affect(self, ctx, user: discord.Member = None):
         user = ctx.author if not user else user
 
-        wanted = Image.open("Utilities/photos/affect.png")
+        wanted = Image.open("utilities/photos/affect.png")
         asset = user.avatar.with_format("png")
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
@@ -394,11 +404,11 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
             )
 
         myfile = requests.get(image_url)
-        open("Utilities/photos/imgur.png", "wb").write(myfile.content)
+        open("utilities/photos/imgur.png", "wb").write(myfile.content)
 
         try:
             uploaded_image = im.upload_image(
-                "Utilities/photos/imgur.png", title=f"Uploaded by SpaceBot"
+                "utilities/photos/imgur.png", title=f"Uploaded by SpaceBot"
             )
         except:
             await ctx.send(

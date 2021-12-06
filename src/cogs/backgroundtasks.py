@@ -4,7 +4,7 @@ from discord.ext import tasks
 import random
 from datetime import datetime
 import re
-from Utilities.helpers.utils import VoteReminder, Votelink,Suicide
+from utilities.helpers.utils import VoteReminder, Votelink,Suicide
 
 
 class BackgroundTasks(commands.Cog):
@@ -124,7 +124,7 @@ class BackgroundTasks(commands.Cog):
         dt = datetime.utcnow()  # this gets the time right now in UTC time
 
         if dt.hour == 12 and dt.minute == 5:
-            truth_file = open("Utilities/Text files/truths.txt",
+            truth_file = open("utilities/text_data/truths.txt",
                               mode="r", encoding="utf8")
             truth_file_facts = truth_file.read().split("\n")
             truth_file.close()
@@ -157,7 +157,7 @@ class BackgroundTasks(commands.Cog):
         dt = datetime.utcnow()  # this gets the time right now in UTC time
 
         if dt.hour == 12 and dt.minute == 5:
-            truth_file = open("Utilities/Text files/facts.txt",
+            truth_file = open("utilities/text_data/facts.txt",
                               mode="r", encoding="utf8")
             truth_file_facts = truth_file.read().split("\n")
             truth_file.close()
@@ -246,8 +246,6 @@ class BackgroundTasks(commands.Cog):
         self.bot.dbcursor.execute("SELECT id, welcome_channel, welcome_toggle, welcome_dm, welcome_message FROM Servers WHERE id = ?", (member.guild.id,))
         result = self.bot.dbcursor.fetchone()
         if result is None:
-            self.bot.dbcursor.execute("INSERT INTO Servers (id,) VALUES (?,)", (member.guild.id,))
-            self.bot.db.commit()
             return
         if result[1] == 1:
             channel = self.bot.get_channel(result[0])
