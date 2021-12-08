@@ -269,7 +269,7 @@ class BackgroundTasks(commands.Cog):
             now = datetime.now()
             delta = now - last_voted_datetime
             # If delta is more than 12 hours then send reminder
-            if delta.total_seconds() > 43200:
+            if 43800> delta.total_seconds() > 43200:
                 user_id = user[0]
                 user = self.bot.get_user(user_id)
                 if user is not None:
