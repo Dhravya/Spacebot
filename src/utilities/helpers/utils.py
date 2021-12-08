@@ -12,7 +12,7 @@ def get_prefix(bot,message): ##first we define get_prefix
         if prefix is None:
             return "."
         else:
-            return prefix[0]
+            return discord.ext.commands.when_mentioned_or(prefix[0])(bot, message)
     except:
         return "."
 
