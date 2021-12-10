@@ -26,9 +26,13 @@ ffmpy
 topggpy
 pyimgur
 rich
-discord-together
 names
 dateparser
 qrcode
 jishaku
 lavalink
+dotenv
+aiodns
+Brotli
+cchardet
+orjson
