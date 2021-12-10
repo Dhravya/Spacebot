@@ -1,10 +1,23 @@
 import discord
 import re
-from typing import Callable, ClassVar, List, Optional, Pattern, Sequence, Tuple, Union, cast
+from typing import (
+    Callable,
+    ClassVar,
+    List,
+    Optional,
+    Pattern,
+    Sequence,
+    Tuple,
+    Union,
+    cast,
+)
 from discord.ext import commands
-class MessagePredicate(Callable[[discord.Message], bool]):
 
-    def __init__(self, predicate: Callable[["MessagePredicate", discord.Message], bool]) -> None:
+
+class MessagePredicate(Callable[[discord.Message], bool]):
+    def __init__(
+        self, predicate: Callable[["MessagePredicate", discord.Message], bool]
+    ) -> None:
         self._pred: Callable[["MessagePredicate", discord.Message], bool] = predicate
         self.result = None
 
@@ -108,5 +121,7 @@ class MessagePredicate(Callable[[discord.Message], bool]):
         """
         same_context = cls.same_context(ctx, channel, user)
         return cls(
-            lambda self, m: (same_context(m) and m.content.lower() == f"{ctx.prefix}cancel")
+            lambda self, m: (
+                same_context(m) and m.content.lower() == f"{ctx.prefix}cancel"
+            )
         )

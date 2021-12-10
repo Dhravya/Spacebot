@@ -21,7 +21,7 @@ class CommandErrorHandler(commands.Cog):
             if cog._get_overridden_method(cog.cog_command_error) is not None:
                 return
 
-        ignored = (commands.CommandNotFound)
+        ignored = commands.CommandNotFound
 
         # Allows us to check for original exceptions raised and sent to CommandInvokeError.
         # If nothing is found. We keep the exception passed to on_command_error.
@@ -37,9 +37,10 @@ class CommandErrorHandler(commands.Cog):
         if isinstance(error, commands.errors.MissingRequiredArgument):
             return await ctx.send(f"{ctx.command} is missing required arguements")
 
-        if isinstance(error, commands.errors.MissingPermissions or commands.errors.CheckFailure):
+        if isinstance(
+            error, commands.errors.MissingPermissions or commands.errors.CheckFailure
+        ):
             return await ctx.send(f"You are missing permissions to use this command")
-
 
         elif isinstance(error, commands.NoPrivateMessage):
             try:
@@ -65,7 +66,6 @@ class CommandErrorHandler(commands.Cog):
                 type(error), error, error.__traceback__, file=sys.stderr
             )
 
-    
-    
+
 def setup(bot):
     bot.add_cog(CommandErrorHandler(bot))

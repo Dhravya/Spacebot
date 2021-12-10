@@ -14,8 +14,9 @@ class DiscordTogether(commands.Cog):
         em.description = f"{error}"
         em.color = 0xEE0000
         await ctx.send(embed=em)
-        me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.channel.id) ,embed=em)
+        me = self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id), embed=em)
+
     """Amazing Discord Multiplayer voice channel games!!!!!"""
 
     @commands.command()
