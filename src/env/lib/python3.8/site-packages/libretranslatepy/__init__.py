@@ -1,1 +1,0 @@
-from libretranslatepy.api import *
