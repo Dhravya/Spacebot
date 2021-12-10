@@ -154,9 +154,7 @@ def execute_move(move, pboard):
                 nb[x][1] = nb[x][0]
                 nb[x][0] = "_"
         nb = rowize(nb)
-    if (
-        nb != pboard
-    ):  # So the user doesn't make a move that doesn't change anything, and just add a number
+    if nb != pboard:
         some_message, nb = add_number(nb)
     else:
         some_message = ""

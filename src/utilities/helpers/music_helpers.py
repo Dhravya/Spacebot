@@ -42,5 +42,3 @@ class Spotify:
 
     def getalbumID(self, id):
         return sp.album(id)
-
-

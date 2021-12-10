@@ -18,8 +18,11 @@ class RoleButton(discord.ui.Button):
         """
         A button for one role. `custom_id` is needed for persistent views.
         """
-        super().__init__(label=role.name,
-                         style=discord.enums.ButtonStyle.primary, custom_id=str(role.id))
+        super().__init__(
+            label=role.name,
+            style=discord.enums.ButtonStyle.primary,
+            custom_id=str(role.id),
+        )
 
     async def callback(self, interaction: discord.Interaction):
         """This function will be called any time a user clicks on this button
@@ -44,11 +47,15 @@ class RoleButton(discord.ui.Button):
         if role not in user.roles:
             # give the user the role if they don't already have it
             await user.add_roles(role)
-            await interaction.response.send_message(f"🎉 You have been given the role {role.mention}", ephemeral=True)
+            await interaction.response.send_message(
+                f"🎉 You have been given the role {role.mention}", ephemeral=True
+            )
         else:
             # else, take the role from the user
             await user.remove_roles(role)
-            await interaction.response.send_message(f"❌ The {role.mention} role has been taken from you", ephemeral=True)
+            await interaction.response.send_message(
+                f"❌ The {role.mention} role has been taken from you", ephemeral=True
+            )
 
 
 class ButtonRoleCog(commands.Cog):
@@ -61,9 +68,17 @@ class ButtonRoleCog(commands.Cog):
 
     # make sure to set the guild ID here to whatever server you want the buttons in
     @slash_command(name="reactionrole")
-    async def reactionrole(self, ctx, channel: discord.TextChannel, title: str, description: str, role1: discord.Role, role2: discord.Role = None, role3: discord.Role = None):
-        """Slash command to post a new view with a button for each role
-        """
+    async def reactionrole(
+        self,
+        ctx,
+        channel: discord.TextChannel,
+        title: str,
+        description: str,
+        role1: discord.Role,
+        role2: discord.Role = None,
+        role3: discord.Role = None,
+    ):
+        """Slash command to post a new view with a button for each role"""
 
         if not ctx.author.guild_permissions.manage_roles == True:
             return await ctx.respond("You dont have the permission to manage roles -_-")
@@ -80,20 +95,29 @@ class ButtonRoleCog(commands.Cog):
         for role_id in role_ids:
             # get the role the guild by ID
             try:
-                await self.bot.db.execute("INSERT INTO Roles(id , guild_id) VALUES (? ,?)", (role_id, ctx.guild.id))
+                await self.bot.db.execute(
+                    "INSERT INTO Roles(id , guild_id) VALUES (? ,?)",
+                    (role_id, ctx.guild.id),
+                )
             except aiosqlite.IntegrityError:
-                return await ctx.respond("A Button role with the same thing already exists.\n In order to cancel that role, just use the command /reactionrole_remove <roleid>")
+                return await ctx.respond(
+                    "A Button role with the same thing already exists.\n In order to cancel that role, just use the command /reactionrole_remove <roleid>"
+                )
 
             self.bot.db.commit()
             role = ctx.guild.get_role(role_id)
             view.add_item(RoleButton(role))
         await ctx.respond("success", ephemeral=True)
-        await channel.send(embed=discord.Embed(title=title, description=description, colour=discord.Colour.random()), view=view)
+        await channel.send(
+            embed=discord.Embed(
+                title=title, description=description, colour=discord.Colour.random()
+            ),
+            view=view,
+        )
 
     @slash_command(name="rr_remove")
     async def reactionrole_remove(self, ctx, role: discord.Role):
-        """Slash command to remove a role button
-        """
+        """Slash command to remove a role button"""
         if not ctx.author.guild_permissions.manage_roles == True:
             return await ctx.respond("You dont have the permission to manage roles -_-")
         try:
@@ -101,7 +125,9 @@ class ButtonRoleCog(commands.Cog):
             self.bot.db.commit()
             await ctx.respond("Successfully removed the role button")
         except aiosqlite.IntegrityError:
-            await ctx.respond("A Button role with the same thing already exists.\n In order to cancel that role, just use the command /reactionrole_remove <roleid>")
+            await ctx.respond(
+                "A Button role with the same thing already exists.\n In order to cancel that role, just use the command /reactionrole_remove <roleid>"
+            )
 
     @commands.Cog.listener()
     async def on_ready(self):
