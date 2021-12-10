@@ -22,7 +22,6 @@ NASA_IMAGES_BASE_URL = "https://images-api.nasa.gov"
 NASA_EPIC_BASE_URL = "https://epic.gsfc.nasa.gov"
 
 
-
 class Misc(Cog):
     """Miscellaneous commands like space, discomegle and typeracer"""
 
@@ -43,8 +42,8 @@ class Misc(Cog):
         em.description = f"{error}"
         em.color = 0xEE0000
         await ctx.send(embed=em)
-        me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.channel.id) ,embed=em)
+        me = self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id), embed=em)
 
     async def get_quote(self) -> Tuple[str, str]:
 
@@ -55,9 +54,7 @@ class Misc(Cog):
     @property
     def font(self) -> ImageFont:
         if self._font is None:
-            self._font = ImageFont.truetype(
-                f"utilities/Menlo.ttf", encoding="unic"
-            )
+            self._font = ImageFont.truetype(f"utilities/Menlo.ttf", encoding="unic")
         return self._font
 
     def generate_image(self, text: str, color: discord.Color) -> discord.File:
@@ -68,8 +65,7 @@ class Misc(Cog):
         text = "\n".join(line.strip() for line in wrapped)
 
         img_width = self.font.getsize(max(wrapped, key=len))[0] + 2 * margin
-        img_height = 20 * len(wrapped) + (len(wrapped) -
-                                          1) * newline + 2 * margin
+        img_height = 20 * len(wrapped) + (len(wrapped) - 1) * newline + 2 * margin
 
         with Image.new("RGBA", (img_width, img_height)) as im:
             draw = ImageDraw.Draw(im)
@@ -99,7 +95,6 @@ class Misc(Cog):
 
     @commands.command(aliases=["tr"])
     @commands.cooldown(1, 10, commands.BucketType.guild)
-
     async def typerace(self, ctx: commands.Context) -> None:
         """
         Begin a typing race!
@@ -157,8 +152,7 @@ class Misc(Cog):
             f"{winner.author.mention} typed the [sentence]({msg.jump_url}) in `{seconds:.2f}s` "
             f"with **{acc:.2f}%** accuracy. (**{wpm:.1f} WPM**)"
         )
-        embed = discord.Embed(color=winner.author.color,
-                              description=description)
+        embed = discord.Embed(color=winner.author.color, description=description)
         await ctx.send(embed=embed, reference=winner_ref)
 
     @commands.command(pass_context=True, no_pm=True)
@@ -173,8 +167,7 @@ class Misc(Cog):
         msg = ""
         msg += "▸ **{}joinpool**: Joins the pool\n".format(prefix)
         msg += "▸ **{}next**: Changes partners\n".format(prefix)
-        msg += "▸ **{}leavepool**: Leaves the pool or conversation\n".format(
-            prefix)
+        msg += "▸ **{}leavepool**: Leaves the pool or conversation\n".format(prefix)
         msg += "▸ **{}check**: Checks who's there\n".format(prefix)
 
         em = discord.Embed(description=msg, colour=user.colour)
@@ -271,8 +264,7 @@ class Misc(Cog):
             )
             await partner_channel.send(embed=em)
 
-            em = discord.Embed(
-                description="**Switching Users.**", colour=self.colour)
+            em = discord.Embed(description="**Switching Users.**", colour=self.colour)
             await channel.send(embed=em)
 
         elif user.id in self.pool.keys():
@@ -292,8 +284,7 @@ class Misc(Cog):
         channel = message.channel
 
         msg = ""
-        msg += "▸ Total Users: __{}__\n".format(
-            len(self.pool) + len(self.link))
+        msg += "▸ Total Users: __{}__\n".format(len(self.pool) + len(self.link))
         msg += "▸ Users in conversation (should be even): __{}__\n".format(
             len(self.link)
         )

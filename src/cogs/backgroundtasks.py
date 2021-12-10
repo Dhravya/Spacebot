@@ -4,7 +4,7 @@ from discord.ext import tasks
 import random
 from datetime import datetime
 import re
-from utilities.helpers.utils import VoteReminder, Votelink,Suicide
+from utilities.helpers.utils import VoteReminder, Votelink, Suicide
 
 
 class BackgroundTasks(commands.Cog):
@@ -14,7 +14,6 @@ class BackgroundTasks(commands.Cog):
         self.session = bot.httpsession
         self.reddit = bot.reddit
 
-        # Starting all tasks
         self.do_fotd.start()
         self.do_qotd.start()
         self.update_stats.start()
@@ -32,9 +31,11 @@ class BackgroundTasks(commands.Cog):
         if message.author == self.bot.user:
             return
 
-
         # Suicide is no joke!!
-        if "kill myself" in message.content.lower() or "suicide" in message.content.lower():
+        if (
+            "kill myself" in message.content.lower()
+            or "suicide" in message.content.lower()
+        ):
             em = discord.Embed(
                 colour=discord.Colour.dark_red(),
                 title="Suicide is no joke!",
@@ -43,10 +44,10 @@ class BackgroundTasks(commands.Cog):
                 url="http://www.suicide.org",
             )
             em.set_image(
-                url="https://media.discordapp.net/attachments/888801137568931881/901450078693240832/Screenshot_20211023-180951_Instagram.jpg?width=589&height=595")
+                url="https://media.discordapp.net/attachments/888801137568931881/901450078693240832/Screenshot_20211023-180951_Instagram.jpg?width=589&height=595"
+            )
             await message.channel.send(embed=em, view=Suicide())
 
-        # Memechannel tasks
         self.bot.dbcursor.execute("SELECT meme_channel FROM Servers")
         ch = self.bot.dbcursor.fetchall()
         self.meme_channel_list = [x[0] for x in ch if x is not None]
@@ -57,51 +58,78 @@ class BackgroundTasks(commands.Cog):
             await message.add_reaction("😒")
 
         try:
-            self.bot.dbcursor.execute("SELECT thank_count from Users WHERE id = ?", (message.author.id,))
+            self.bot.dbcursor.execute(
+                "SELECT thank_count from Users WHERE id = ?", (message.author.id,)
+            )
         except KeyError:
-            self.bot.dbcursor.execute("INSERT INTO Users(id, guild_id) VALUES (?, ?)", (message.author.id, message.guild.id))
+            self.bot.dbcursor.execute(
+                "INSERT INTO Users(id, guild_id) VALUES (?, ?)",
+                (message.author.id, message.guild.id),
+            )
             self.bot.db.commit()
 
-        # Thank system
-        thank_words = ["thanks","thank you", "thank"]
+        thank_words = ["thanks", "thank you", "thank"]
         if any(word in message.content.lower() for word in thank_words):
             if message.mentions:
                 user = message.mentions[0]
                 if user.bot:
                     return
                 if user.id == message.author.id:
-                    return await message.channel.send("You can't thank yourself, you know?")
-                
-                numbers = self.bot.dbcursor.execute("SELECT thank_count FROM Users WHERE id = ?", (user.id,)).fetchone()
+                    return await message.channel.send(
+                        "You can't thank yourself, you know?"
+                    )
+
+                numbers = self.bot.dbcursor.execute(
+                    "SELECT thank_count FROM Users WHERE id = ?", (user.id,)
+                ).fetchone()
                 print(numbers)
                 if numbers is None:
-                    self.bot.dbcursor.execute("INSERT INTO Users(id, guild_id) VALUES (?, ?)", (user.id, message.guild.id))
+                    self.bot.dbcursor.execute(
+                        "INSERT INTO Users(id, guild_id) VALUES (?, ?)",
+                        (user.id, message.guild.id),
+                    )
                     self.bot.db.commit()
                     number = 0
                 else:
                     number = numbers[0]
-                self.bot.dbcursor.execute("UPDATE Users SET thank_count = ? WHERE id = ?", (number + 1, user.id))
+                self.bot.dbcursor.execute(
+                    "UPDATE Users SET thank_count = ? WHERE id = ?",
+                    (number + 1, user.id),
+                )
                 self.bot.db.commit()
                 try:
-                    await message.channel.send(f"Added +1 Reputation to {user.mention}!")
+                    await message.channel.send(
+                        f"Added +1 Reputation to {user.mention}!"
+                    )
                 except:
                     pass
 
-        # Secret cheat to figure out voting stuff
-        if message.channel.id == 910789970514542662 : # Make sure that this is the dedicated channel id, in an integer format
-            data = message.content.split(" ") # Split the contents of the webhook message
-            user = re.sub("\D", "", data[4]) # Reducing a ping to just a user id, see above
+        if message.channel.id == 910789970514542662:
+            data = message.content.split(" ")
+            user = re.sub("\D", "", data[4])
             self.bot.dbcursor.execute("SELECT * from Users WHERE id = ?", (user,))
             user_data = self.bot.dbcursor.fetchone()
             if user_data is None:
-                self.bot.dbcursor.execute("INSERT INTO Users(id, guild_id) VALUES (?, ?)", (user, message.guild.id))
+                self.bot.dbcursor.execute(
+                    "INSERT INTO Users(id, guild_id) VALUES (?, ?)",
+                    (user, message.guild.id),
+                )
                 self.bot.db.commit()
-            
-            self.bot.dbcursor.execute("UPDATE Users SET last_voted = ? WHERE id = ?", (str(datetime.now()), user))
-            user = self.bot.get_user(int(user)) # Get the user object from the user id
 
-            view = VoteReminder(self.bot,user) # Create a view object
-            await user.send(embed=discord.Embed(title="Thanks you for voting for Spacebot!!", description="Your support is really appreciated!\nClick on the button below to be reminded every time you can vote!"), view=view)
+            self.bot.dbcursor.execute(
+                "UPDATE Users SET last_voted = ? WHERE id = ?",
+                (str(datetime.now()), user),
+            )
+            user = self.bot.get_user(int(user))
+
+            view = VoteReminder(self.bot, user)
+            await user.send(
+                embed=discord.Embed(
+                    title="Thanks you for voting for Spacebot!!",
+                    description="Your support is really appreciated!\nClick on the button below to be reminded every time you can vote!",
+                ),
+                view=view,
+            )
             self.bot.dbcursor.execute("SELECT * from Users WHERE id = ?", (user.id,))
             user_data = self.bot.dbcursor.fetchone()
 
@@ -116,16 +144,16 @@ class BackgroundTasks(commands.Cog):
         except Exception as e:
             print(f"Failed to post server count\n{e.__class__.__name__}: {e}")
 
-    # Doesnt work lmfao
-    @tasks.loop(seconds=30)  # checks for the time every 2 seconds
+    @tasks.loop(seconds=30)
     async def do_qotd(self):
         await self.bot.wait_until_ready()
 
-        dt = datetime.utcnow()  # this gets the time right now in UTC time
+        dt = datetime.utcnow()
 
         if dt.hour == 12 and dt.minute == 5:
-            truth_file = open("utilities/text_data/truths.txt",
-                              mode="r", encoding="utf8")
+            truth_file = open(
+                "utilities/text_data/truths.txt", mode="r", encoding="utf8"
+            )
             truth_file_facts = truth_file.read().split("\n")
             truth_file.close()
 
@@ -149,16 +177,16 @@ class BackgroundTasks(commands.Cog):
                     if channel is not None:
                         await channel.send(embed=em)
 
-    # Doesnt work either TT
-    @tasks.loop(seconds=30)  # checks for the time every 2 seconds
+    @tasks.loop(seconds=30)
     async def do_fotd(self):
-        """Sends the fact of the day to all the channels in the database """
+        """Sends the fact of the day to all the channels in the database"""
         await self.bot.wait_until_ready()
-        dt = datetime.utcnow()  # this gets the time right now in UTC time
+        dt = datetime.utcnow()
 
         if dt.hour == 12 and dt.minute == 5:
-            truth_file = open("utilities/text_data/facts.txt",
-                              mode="r", encoding="utf8")
+            truth_file = open(
+                "utilities/text_data/facts.txt", mode="r", encoding="utf8"
+            )
             truth_file_facts = truth_file.read().split("\n")
             truth_file.close()
 
@@ -182,7 +210,6 @@ class BackgroundTasks(commands.Cog):
                     if channel is not None:
                         await channel.send(embed=em)
 
-    # Sends a help thing to the user
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         await self.bot.wait_until_ready()
@@ -191,7 +218,7 @@ class BackgroundTasks(commands.Cog):
                 embed = discord.Embed(
                     title="Hi! I'm Spacebot!! 🥰",
                     description="Hey there! Thank you for adding me!\nMy prefix is `.`\nStart by typing `.help`\nTo use all my features, make sure to give me the following perms:\n~ `Manage Server`, `Kick`, `Ban`, `Manage emojis`, `Manage roles`, `Send messages`, `embed links`, `attach files`, `add reactions`, `use external emojis`, `manage messages`\nVoice channel: connect, speak.",
-                    colour=discord.Colour.blue()
+                    colour=discord.Colour.blue(),
                 )
                 return await channel.send(embed=embed)
         try:
@@ -207,54 +234,75 @@ class BackgroundTasks(commands.Cog):
         self.bot.dbcursor.execute(f"DELETE FROM Servers WHERE id = {guild.id}")
         self.bot.db.commit()
 
-    # For starboard
     @commands.Cog.listener()
-    async def on_raw_reaction_add(self,payload):
+    async def on_raw_reaction_add(self, payload):
         await self.bot.wait_until_ready()
 
-        stars = ["⭐","🌟"]
+        stars = ["⭐", "🌟"]
         if payload.emoji.name in stars:
             try:
                 try:
-                    self.bot.dbcursor.execute(f"SELECT starboard_channel FROM Servers WHERE id = {payload.guild_id}")  
+                    self.bot.dbcursor.execute(
+                        f"SELECT starboard_channel FROM Servers WHERE id = {payload.guild_id}"
+                    )
                 except:
-                    self.bot.dbcursor.execute(f"SELECT starboard_channel FROM Servers WHERE id = {payload.guild_id}")
+                    self.bot.dbcursor.execute(
+                        f"SELECT starboard_channel FROM Servers WHERE id = {payload.guild_id}"
+                    )
                 channel = self.bot.get_channel(payload.channel_id)
                 message = await channel.fetch_message(payload.message_id)
-                reactions = discord.utils.get(message.reactions, emoji=payload.emoji.name)
+                reactions = discord.utils.get(
+                    message.reactions, emoji=payload.emoji.name
+                )
                 if reactions.count == 4:
                     embed = discord.Embed(
                         title=f"🌟 New star 🌟",
                         description=message.content or ".",
                         colour=discord.Colour.blue(),
-                        timestamp=message.created_at
+                        timestamp=message.created_at,
                     )
                     embed.add_field(name="JUMP TO THE MESSAGE!", value=message.jump_url)
                     if message.attachments:
                         attachment = message.attachments[0]
                         embed.set_image(url=attachment.url)
                     embed.set_footer(text=f"{message.author.name}'s message")
-                    starboard_channel = self.bot.get_channel(self.bot.dbcursor.fetchone()[0])
-                    await starboard_channel.send(f"New star in {channel.mention}",embed=embed)
+                    starboard_channel = self.bot.get_channel(
+                        self.bot.dbcursor.fetchone()[0]
+                    )
+                    await starboard_channel.send(
+                        f"New star in {channel.mention}", embed=embed
+                    )
             except Exception as e:
-                self.bot.console.print(f"ERROR: Failed to post starboard message\n{e.__class__.__name__}: {e}", style="error")
+                self.bot.console.print(
+                    f"ERROR: Failed to post starboard message\n{e.__class__.__name__}: {e}",
+                    style="error",
+                )
 
-    # For welcome message
     @commands.Cog.listener()
     async def on_member_join(self, member):
         await self.bot.wait_until_ready()
-        self.bot.dbcursor.execute("SELECT id, welcome_channel, welcome_toggle, welcome_dm, welcome_message FROM Servers WHERE id = ?", (member.guild.id,))
+        self.bot.dbcursor.execute(
+            "SELECT id, welcome_channel, welcome_toggle, welcome_dm, welcome_message FROM Servers WHERE id = ?",
+            (member.guild.id,),
+        )
         result = self.bot.dbcursor.fetchone()
         if result is None:
             return
         if result[1] == 1:
             channel = self.bot.get_channel(result[0])
             if channel is not None:
-                await channel.send(f"{result[3]} <@{member.id}>" if result[3] else f"Welcome to {member.guild.name} {member.mention}")
+                await channel.send(
+                    f"{result[3]} <@{member.id}>"
+                    if result[3]
+                    else f"Welcome to {member.guild.name} {member.mention}"
+                )
             if result[2] == 1:
-                await member.send(f"{result[3]} <@{member.id}>" if result[3] else f"Welcome to {member.guild.name} {member.mention}")
+                await member.send(
+                    f"{result[3]} <@{member.id}>"
+                    if result[3]
+                    else f"Welcome to {member.guild.name} {member.mention}"
+                )
 
-    # vote reminder. pulls the user from the database and sends reminder if they have not voted in the last 12 hours
     @tasks.loop(minutes=10)
     async def send_vote_reminder(self):
         await self.bot.wait_until_ready()
@@ -265,67 +313,74 @@ class BackgroundTasks(commands.Cog):
             if user[1] == 0:
                 continue
             last_voted_datetime = user[2]
-            last_voted_datetime =datetime.strptime(last_voted_datetime, "%Y-%m-%dT%H:%M:%S.%f")
+            last_voted_datetime = datetime.strptime(
+                last_voted_datetime, "%Y-%m-%dT%H:%M:%S.%f"
+            )
             now = datetime.now()
             delta = now - last_voted_datetime
             # If delta is more than 12 hours then send reminder
-            if 43800> delta.total_seconds() > 43200:
+            if 43800 > delta.total_seconds() > 43200:
                 user_id = user[0]
                 user = self.bot.get_user(user_id)
                 if user is not None:
-                    await user.send("Hey there! You haven't voted for Spacebot yet. Click this link in order to vote: https://top.gg/bot/881862674051391499/vote.", view=Votelink)
+                    await user.send(
+                        "Hey there! You haven't voted for Spacebot yet. Click this link in order to vote: https://top.gg/bot/881862674051391499/vote.",
+                        view=Votelink,
+                    )
+
 
 def setup(bot):
     bot.add_cog(BackgroundTasks(bot))
 
+
 #! ARCHIVED PART OF THE CODE
-    # @tasks.loop(minutes=2)
+# @tasks.loop(minutes=2)
 
-    # async def do_reddit_feed(self):
-    #     await self.bot.wait_until_ready()
-        
-    #     channels = channels_feed_list.keys()
+# async def do_reddit_feed(self):
+#     await self.bot.wait_until_ready()
 
-    #     for channel in channels:
-    #         channelid = int(channel)
+#     channels = channels_feed_list.keys()
 
-    #         id = db["servers"][str(self.bot.get_channel(channelid).guild.id)]["settings"][
-    #             "feeds"
-    #         ]["Last_reddit_post"][str(channelid)]
-    #         subredditname = channels_feed_list[channel]
-    #         subreddit = await self.reddit.subreddit(subredditname)
-    #         async for submission in subreddit.new(limit=1):
-    #             if not submission.over_18 and submission.id != id:
-    #                 name = submission.title
-    #                 url = submission.url
+#     for channel in channels:
+#         channelid = int(channel)
 
-    #                 em = discord.Embed(
-    #                     colour=discord.Colour.blurple(),
-    #                     title=name,
-    #                     url=f"https://reddit.com/{submission.id}",
-    #                 )
-    #                 if "comment" in url:
-    #                     url = submission.selftext
-    #                     em.description = url
-    #                 elif "v.redd.it" in url:
-    #                     em.description = url
-    #                     continue
-    #                 else:
-    #                     em.set_image(url=url)
-    #                 await subreddit.load()
-    #                 em.set_author(
-    #                     name=submission.author,
-    #                     icon_url="https://external-preview.redd.it/iDdntscPf-nfWKqzHRGFmhVxZm4hZgaKe5oyFws-yzA.png?auto=webp&s=38648ef0dc2c3fce76d5e1d8639234d8da0152b2",
-    #                 )
-    #                 em.set_footer(
-    #                     text=f"Taken from r/{subreddit}, Score = {submission.score}",
-    #                     icon_url=subreddit.icon_img,
-    #                 )
+#         id = db["servers"][str(self.bot.get_channel(channelid).guild.id)]["settings"][
+#             "feeds"
+#         ]["Last_reddit_post"][str(channelid)]
+#         subredditname = channels_feed_list[channel]
+#         subreddit = await self.reddit.subreddit(subredditname)
+#         async for submission in subreddit.new(limit=1):
+#             if not submission.over_18 and submission.id != id:
+#                 name = submission.title
+#                 url = submission.url
 
-    #                 target_channel = self.bot.get_channel(channelid)
-    #                 await target_channel.send(embed=em)
-    #                 db["servers"][str(self.bot.get_channel(channelid).guild.id)]["settings"][
-    #                     "feeds"
-    #                 ]["Last_reddit_post"][str(channelid)] = submission.id
-    #                 with open("otherfiles/data/db/database.json", "w") as f:
-    #                     json.dump(db, f, indent=4)
+#                 em = discord.Embed(
+#                     colour=discord.Colour.blurple(),
+#                     title=name,
+#                     url=f"https://reddit.com/{submission.id}",
+#                 )
+#                 if "comment" in url:
+#                     url = submission.selftext
+#                     em.description = url
+#                 elif "v.redd.it" in url:
+#                     em.description = url
+#                     continue
+#                 else:
+#                     em.set_image(url=url)
+#                 await subreddit.load()
+#                 em.set_author(
+#                     name=submission.author,
+#                     icon_url="https://external-preview.redd.it/iDdntscPf-nfWKqzHRGFmhVxZm4hZgaKe5oyFws-yzA.png?auto=webp&s=38648ef0dc2c3fce76d5e1d8639234d8da0152b2",
+#                 )
+#                 em.set_footer(
+#                     text=f"Taken from r/{subreddit}, Score = {submission.score}",
+#                     icon_url=subreddit.icon_img,
+#                 )
+
+#                 target_channel = self.bot.get_channel(channelid)
+#                 await target_channel.send(embed=em)
+#                 db["servers"][str(self.bot.get_channel(channelid).guild.id)]["settings"][
+#                     "feeds"
+#                 ]["Last_reddit_post"][str(channelid)] = submission.id
+#                 with open("otherfiles/data/db/database.json", "w") as f:
+#                     json.dump(db, f, indent=4)

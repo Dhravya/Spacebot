@@ -15,10 +15,7 @@ api_link = "https://evilinsult.com/generate_insult.php?lang=en&type=txt"
 urlaco = "https://acobot-brainshop-ai-v1.p.rapidapi.com/get"
 
 
-
-class Fun(
-    commands.Cog, name="Fun", description="Fun stuff that no one will use"
-):
+class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.bot.topggpy = bot.topggpy
@@ -35,8 +32,9 @@ class Fun(
         em.description = f"{error}"
         em.color = 0xEE0000
         await ctx.send(embed=em)
-        me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.channel.id) ,embed=em)
+        me = self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id), embed=em)
+
     @commands.command(
         description="Don't do this. The bot will insult you.", name="talk_rude"
     )
@@ -67,9 +65,7 @@ class Fun(
         await ctx.send(humor_langs.strong_british_accent(message))
 
     @commands.group(name="cool")
-    async def cool(
-        self, ctx: commands.Context, member: discord.Member, error=None
-    ):
+    async def cool(self, ctx: commands.Context, member: discord.Member, error=None):
 
         if member.id == 512885190251642891:
             return await ctx.send(
@@ -156,9 +152,7 @@ class Fun(
     async def quack(self, ctx):  # You found a secret! Congradulations 🎉
         """A *~~hidden~~* duck image command.\nPowered by random-d.uk | Not secretly added by Duck <a:BongoCoding:806396390103187526>"""
 
-        embed = discord.Embed(
-            title="Quack Quack :duck:", color=discord.Color.orange()
-        )
+        embed = discord.Embed(title="Quack Quack :duck:", color=discord.Color.orange())
         embed.set_author(name=ctx.author, icon_url=ctx.author.avatar.url)
         embed.set_footer(
             text="Powered by random-d.uk",
@@ -166,13 +160,9 @@ class Fun(
         )
         file = random.choice(["jpg", "gif"])
         if file == "jpg":
-            embed.set_image(
-                url=f"https://random-d.uk/api/{random.randint(1,191)}.jpg"
-            )
+            embed.set_image(url=f"https://random-d.uk/api/{random.randint(1,191)}.jpg")
         elif file == "gif":
-            embed.set_image(
-                url=f"https://random-d.uk/api/{random.randint(1,42)}.gif"
-            )
+            embed.set_image(url=f"https://random-d.uk/api/{random.randint(1,42)}.gif")
         await ctx.send(embed=embed)
 
     @commands.command()
@@ -242,9 +232,7 @@ class Fun(
 
         message = discord.Embed(title="8 Ball", colour=discord.Colour.orange())
         message.add_field(name="Question:", value=question, inline=False)
-        message.add_field(
-            name="Answer:", value=random.choice(responses), inline=False
-        )
+        message.add_field(name="Answer:", value=random.choice(responses), inline=False)
         await ctx.send(embed=message)
 
     @commands.command(name="slap")
@@ -261,9 +249,9 @@ class Fun(
 
         if r.status_code == 200:
             top_gifs = json.loads(r.content)
-            uri = random.choice(random.choice(top_gifs["results"])["media"])[
-                "gif"
-            ]["url"]
+            uri = random.choice(random.choice(top_gifs["results"])["media"])["gif"][
+                "url"
+            ]
 
         else:
             embed = discord.Embed(
@@ -300,9 +288,9 @@ class Fun(
 
         if r.status_code == 200:
             top_gifs = json.loads(r.content)
-            uri = random.choice(random.choice(top_gifs["results"])["media"])[
-                "gif"
-            ]["url"]
+            uri = random.choice(random.choice(top_gifs["results"])["media"])["gif"][
+                "url"
+            ]
 
         else:
             embed = discord.Embed(
@@ -340,9 +328,9 @@ class Fun(
 
         if r.status_code == 200:
             top_gifs = json.loads(r.content)
-            uri = random.choice(random.choice(top_gifs["results"])["media"])[
-                "gif"
-            ]["url"]
+            uri = random.choice(random.choice(top_gifs["results"])["media"])["gif"][
+                "url"
+            ]
 
         else:
             embed = discord.Embed(
@@ -378,9 +366,9 @@ class Fun(
 
         if r.status_code == 200:
             top_gifs = json.loads(r.content)
-            uri = random.choice(random.choice(top_gifs["results"])["media"])[
-                "gif"
-            ]["url"]
+            uri = random.choice(random.choice(top_gifs["results"])["media"])["gif"][
+                "url"
+            ]
 
             await ctx.message.reply(uri)
 
@@ -398,9 +386,7 @@ class Fun(
 
     @commands.command(name="truth")
     async def truth(self, ctx):
-        truth_file = open(
-            "utilities/text_data/truths.txt", mode="r", encoding="utf8"
-        )
+        truth_file = open("utilities/text_data/truths.txt", mode="r", encoding="utf8")
         truth_file_facts = truth_file.read().split("\n")
         truth_file.close()
 
@@ -412,9 +398,7 @@ class Fun(
     @commands.command(name="dare")
     async def dare(self, ctx):
 
-        dares_file = open(
-            "utilities/text_data/dares.txt", mode="r", encoding="utf8"
-        )
+        dares_file = open("utilities/text_data/dares.txt", mode="r", encoding="utf8")
         dares_file_facts = dares_file.read().split("\n")
         dares_file.close()
 
@@ -442,9 +426,7 @@ class Fun(
         while True:
             try:
 
-                msg = await self.bot.wait_for(
-                    "message", check=check, timeout=120.0
-                )
+                msg = await self.bot.wait_for("message", check=check, timeout=120.0)
             except asyncio.TimeoutError:
                 return await ctx.send("Bye :wave:")
             else:
@@ -477,20 +459,16 @@ class Fun(
     @commands.command(aliases=["xkcd", "comic"])
     async def randomcomic(self, ctx):
         """Get a comic from xkcd."""
-        
+
         async with self.session.get(f"http://xkcd.com/info.0.json") as resp:
             data = await resp.json()
             currentcomic = data["num"]
         rand = random.randint(0, currentcomic)  # max = current comic
-        async with self.session.get(
-            f"http://xkcd.com/{rand}/info.0.json"
-        ) as resp:
-                data = await resp.json()
+        async with self.session.get(f"http://xkcd.com/{rand}/info.0.json") as resp:
+            data = await resp.json()
         em = discord.Embed(color=discord.Color.green())
         em.title = f"XKCD Number {data['num']}- \"{data['title']}\""
-        em.set_footer(
-            text=f"Published on {data['month']}/{data['day']}/{data['year']}"
-        )
+        em.set_footer(text=f"Published on {data['month']}/{data['day']}/{data['year']}")
         em.set_image(url=data["img"])
         await ctx.send(embed=em)
 
@@ -501,9 +479,7 @@ class Fun(
             await ctx.send(f"Usage: `{ctx.prefix}numberfact <number>`")
             return
         try:
-            async with self.session.get(
-                f"http://numbersapi.com/{number}?json"
-            ) as resp:
+            async with self.session.get(f"http://numbersapi.com/{number}?json") as resp:
                 file = await resp.json()
                 fact = file["text"]
                 await ctx.send(f"**Did you know?**\n*{fact}*")
@@ -545,20 +521,12 @@ class Fun(
                 f"I would love to give beer to the bot **{ctx.author.name}**, but I don't think it will respond to you :/"
             )
 
-        beer_offer = (
-            f"**{user.name}**, you got a 🍺 offer from **{ctx.author.name}**"
-        )
-        beer_offer = (
-            beer_offer + f"\n\n**Reason:** {reason}" if reason else beer_offer
-        )
+        beer_offer = f"**{user.name}**, you got a 🍺 offer from **{ctx.author.name}**"
+        beer_offer = beer_offer + f"\n\n**Reason:** {reason}" if reason else beer_offer
         msg = await ctx.send(beer_offer)
 
         def reaction_check(m):
-            if (
-                m.message_id == msg.id
-                and m.user_id == user.id
-                and str(m.emoji) == "🍻"
-            ):
+            if m.message_id == msg.id and m.user_id == user.id and str(m.emoji) == "🍻":
                 return True
             return False
 
@@ -577,13 +545,9 @@ class Fun(
             )
         except discord.Forbidden:
             # Yeah so, bot doesn't have reaction permission, drop the "offer" word
+            beer_offer = f"**{user.name}**, you got a 🍺 from **{ctx.author.name}**"
             beer_offer = (
-                f"**{user.name}**, you got a 🍺 from **{ctx.author.name}**"
-            )
-            beer_offer = (
-                beer_offer + f"\n\n**Reason:** {reason}"
-                if reason
-                else beer_offer
+                beer_offer + f"\n\n**Reason:** {reason}" if reason else beer_offer
             )
             await msg.edit(content=beer_offer)
 
@@ -700,7 +664,9 @@ class Fun(
         if reason.lower().startswith("for "):
             reason = reason[4:]
 
-        self.bot.dbcursor.execute("INSERT INTO Users() VALUES()", (user_.id, ctx.author.id, reason))
+        self.bot.dbcursor.execute(
+            "INSERT INTO Users() VALUES()", (user_.id, ctx.author.id, reason)
+        )
         return await ctx.reply(
             embed=discord.Embed(
                 title=f":heart: Thank you!",
@@ -709,7 +675,6 @@ class Fun(
                 url="https://cdn.discordapp.com/emojis/856078862852161567.png?v=1"
             )
         )
-        
 
     @commands.command()
     async def simprate(
@@ -727,27 +692,19 @@ class Fun(
             message = f"{member.mention} is **{rate}**% simping for {simpable} {emoji}"
         else:
             message = f"{member.mention} is **{rate}**% simp {emoji}"
-        await ctx.send(
-            message, allowed_mentions=discord.AllowedMentions(users=False)
-        )
+        await ctx.send(message, allowed_mentions=discord.AllowedMentions(users=False))
 
     @commands.command()
-    async def clownrate(
-        self, ctx: commands.Context, member: Optional[discord.Member]
-    ):
+    async def clownrate(self, ctx: commands.Context, member: Optional[discord.Member]):
         """Reveal someone's clownery."""
         member = member or ctx.author
         rate = random.choice(range(1, 100))
         emoji = self.bot.get_emoji(758821900808880138) or "🤡"
         message = f"{member.mention} is **{rate}**% clown {emoji}"
-        await ctx.send(
-            message, allowed_mentions=discord.AllowedMentions(users=False)
-        )
+        await ctx.send(message, allowed_mentions=discord.AllowedMentions(users=False))
 
     @commands.command(aliases=["iq"])
-    async def iqrate(
-        self, ctx: commands.Context, member: Optional[discord.Member]
-    ):
+    async def iqrate(self, ctx: commands.Context, member: Optional[discord.Member]):
         """100% legit IQ test."""
         member = member or ctx.author
         random.seed(member.id + self.bot.user.id)
@@ -790,9 +747,7 @@ class Fun(
             interval = 1.5
         while times > time:
             time = time + 1
-            color = "".join(
-                [random.choice("0123456789ABCDEF") for x in range(6)]
-            )
+            color = "".join([random.choice("0123456789ABCDEF") for x in range(6)])
             color = int(color, 16)
             try:
                 await rainbow.edit(
@@ -818,12 +773,14 @@ class Fun(
 
     @commands.group(hidden=True, aliases=["wh"])
     @commands.bot_has_permissions(manage_webhooks=True)
-    async def webhook(self,ctx):
+    async def webhook(self, ctx):
         if ctx.invoked_subcommand is None:
             await ctx.send("Invalid subcommand passed.")
-    
+
     @webhook.command()
-    async def mimic(self, ctx: commands.Context, member: Optional[discord.Member], *, msg: str):
+    async def mimic(
+        self, ctx: commands.Context, member: Optional[discord.Member], *, msg: str
+    ):
         """
         Say things as another user
         The bot will create a webhook in the channel the command is sent in
@@ -870,7 +827,9 @@ class Fun(
         # Apparently webhooks have @everyone permissions
         if ctx.channel.permissions_for(ctx.me).manage_messages:
             await ctx.message.delete()
-        await webhook.send(humor_langs.owofy(msg), username=member.display_name, avatar_url=avatar)
+        await webhook.send(
+            humor_langs.owofy(msg), username=member.display_name, avatar_url=avatar
+        )
 
     @commands.command()
     async def face(self, ctx, number=None):
@@ -888,47 +847,65 @@ class Fun(
                 await ctx.send(FACES[int(number) - 1])
                 return
             else:
-                await ctx.send("That number is too large, pick less than {}!".format(len(FACES)))
+                await ctx.send(
+                    "That number is too large, pick less than {}!".format(len(FACES))
+                )
                 return
         if not number.isdigit() and "<@!" not in number:
             await ctx.send(FACES[len(number)])
 
-    @commands.command(aliases=["rep","thank_count","thanks_count", "thankcount"])
-    async def reputation(self,ctx,user:discord.Member=None):
+    @commands.command(aliases=["rep", "thank_count", "thanks_count", "thankcount"])
+    async def reputation(self, ctx, user: discord.Member = None):
         """Shows the reputation of a user"""
         if not user:
             user = ctx.author
         try:
-            result = self.bot.dbcursor.execute("SELECT thank_count FROM Users WHERE id=?",(user.id,)).fetchone()
+            result = self.bot.dbcursor.execute(
+                "SELECT thank_count FROM Users WHERE id=?", (user.id,)
+            ).fetchone()
             if not result:
                 await ctx.send("That user has no reputation.")
                 return
         except:
-            self.bot.dbcursor.execute("INSERT INTO Users(id, guild_id) VALUES (?,?)",(user.id,ctx.guild.id))
-            self.bot.dbcursor.execute("SELECT thank_count FROM Users WHERE id=?",(user.id,))
+            self.bot.dbcursor.execute(
+                "INSERT INTO Users(id, guild_id) VALUES (?,?)", (user.id, ctx.guild.id)
+            )
+            self.bot.dbcursor.execute(
+                "SELECT thank_count FROM Users WHERE id=?", (user.id,)
+            )
             result = self.bot.dbcursor.fetchone()
-   
-        self.bot.dbcursor.execute("SELECT id FROM Users WHERE guild_id=? ORDER BY thank_count DESC",(ctx.guild.id,))
+
+        self.bot.dbcursor.execute(
+            "SELECT id FROM Users WHERE guild_id=? ORDER BY thank_count DESC",
+            (ctx.guild.id,),
+        )
         result2 = self.bot.dbcursor.fetchall()
         result2 = [x[0] for x in result2]
-        
-        await ctx.send(f"You have **{result[0]}** reputation points. Your rank is {result2.index(user.id)+1}")
+
+        await ctx.send(
+            f"You have **{result[0]}** reputation points. Your rank is {result2.index(user.id)+1}"
+        )
 
     @commands.command()
-    async def top_rep(self,ctx):
+    async def top_rep(self, ctx):
         """Shows the top 10 users with the most reputation"""
-        self.bot.dbcursor.execute("SELECT id FROM Users WHERE guild_id=? ORDER BY thank_count DESC",(ctx.guild.id,))
-        
+        self.bot.dbcursor.execute(
+            "SELECT id FROM Users WHERE guild_id=? ORDER BY thank_count DESC",
+            (ctx.guild.id,),
+        )
+
         result = self.bot.dbcursor.fetchall()
         result = [x[0] for x in result]
         if len(result) < 10:
-            await ctx.send("There are not enough users with reputation to show the top 10!")
+            await ctx.send(
+                "There are not enough users with reputation to show the top 10!"
+            )
             return
         result = result[:10]
-        result = [discord.utils.get(ctx.guild.members,id=x) for x in result]
+        result = [discord.utils.get(ctx.guild.members, id=x) for x in result]
         result = [x.display_name for x in result]
         await ctx.send("\n".join(result))
-    
+
 
 def setup(bot):
     bot.add_cog(Fun(bot))

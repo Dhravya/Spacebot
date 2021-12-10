@@ -1,5 +1,6 @@
 import discord
 from typing import List, Optional
+
 cog_help = {
     "Fun": """
         Fun commands for everyone!!
@@ -40,8 +41,7 @@ cog_help = {
         `.thankcount`
         `.truth`
         `.webhook` - Creates a temperory webhook to mimic yourself!""",
-
-    "Config":"""
+    "Config": """
         Make Spacebot your own !!!
 
         censoredwords         Get the list of censored words of the server
@@ -54,7 +54,6 @@ cog_help = {
         starboard_set         Set the channel for starboard
         welcome_setup         Set the channel for welcome messages
         wordcensor            Censors a word on the server""",
-
     "Music and Moderation commands": """
         Music bot commands, cause all the other bots are dying!
 
@@ -75,8 +74,7 @@ cog_help = {
         Moderation Commands
         `kick`, `ban`, `mute`, `unmute`, `wordcensor`, `removecensor`, `prune`, `clean`, `warn`, `announce` 
         """,
-
-    'Bot Commands': """
+    "Bot Commands": """
         `.advancedhelp`
         `.botinfo` – Bot stats.
         `.dev`
@@ -84,7 +82,6 @@ cog_help = {
         `.ping` – checks ping and latency
         `.suggestdev`
         `.vote`""",
-
     "Utility": """
         Useful stuff
 
@@ -130,8 +127,6 @@ cog_help = {
         `.wolframsolve` – Ask Wolfram Alpha any math question. Returns step by step answers.
         `names` - Generate a random name, last name or mash names together
         `qr` - A really really fancy QR code generator""",
-
-
     "Games and Miscellaneous": """
         .discomegle – Chat with other discord people anonymously! DM THIS TO THE BOT
         .space – Head command that contains commands about space.
@@ -152,7 +147,6 @@ cog_help = {
         .poker – Poker game
         .wordsnack – IM too dumb for this lmfao
         .youtube_together – Watch youtube together with your friends!""",
-
     "Image Commands": """
         Image Commands!!
         .achievement – Achievement unlocked
@@ -183,8 +177,7 @@ cog_help = {
         .textart – Generate cool font
         .wanted
         .what
-        .invert - Inverts the colours of an image!"""
-
+        .invert - Inverts the colours of an image!""",
 }
 FACES = [
     "¢‿¢",
@@ -618,8 +611,9 @@ FACES = [
 
 
 def Help_Embed():
-    em = discord.Embed(title='🔴 ***SPACEBOT HELP***',
-                       description=f"""
+    em = discord.Embed(
+        title="🔴 ***SPACEBOT HELP***",
+        description=f"""
         > I'm a feature-packed bot with tons of commands.
         > Spacebot is one of the best multipurpose bots with
         > Fun, Utility, Games, Music, Moderation and Levelling!
@@ -638,10 +632,11 @@ def Help_Embed():
         > You can also use the command `.help` to get the help menu.
 
         ```Invite me using the .invite command!```
-        """)
+        """,
+    )
     em.set_image(
-        url='https://images-ext-2.discordapp.net/external/MWmqAGeEWIpEaaq9rcMCrPYzMEScRGxEOB4ao9Ph2s0/https/media.discordapp.net/attachments/888798533459775491/903219469650890862/standard.gif')
-    em.set_footer(
-        text="Check out https://millenia.tech !!")
+        url="https://images-ext-2.discordapp.net/external/MWmqAGeEWIpEaaq9rcMCrPYzMEScRGxEOB4ao9Ph2s0/https/media.discordapp.net/attachments/888798533459775491/903219469650890862/standard.gif"
+    )
+    em.set_footer(text="Check out https://millenia.tech !!")
     em.color = discord.Colour.blue()
     return em

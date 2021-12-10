@@ -8,8 +8,9 @@ from PIL import ImageOps
 
 import pyimgur
 
-im = pyimgur.Imgur(os.getenv('IMGUR_API_KEY'))
+im = pyimgur.Imgur(os.getenv("IMGUR_API_KEY"))
 afp = alexflipnote.Client(os.getenv("AFP_KEY"))
+
 
 class Images(commands.Cog, name="Image", description="Image Commands"):
     def __init__(self, bot: commands.Bot):
@@ -28,8 +29,8 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
         em.description = f"{error}"
         em.color = 0xEE0000
         await ctx.send(embed=em)
-        me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.channel.id) ,embed=em)
+        me = self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id), embed=em)
 
     @commands.command()
     async def wanted(self, ctx, user: discord.Member = None):
@@ -103,7 +104,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
 
     @commands.command()
     async def dog(self, ctx):
-       
+
         request = await self.session.get(
             "https://some-random-api.ml/img/dog"
         )  # Make a request
@@ -118,7 +119,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
 
     @commands.command()
     async def cat(self, ctx):
-        
+
         request = await self.session.get(
             "https://some-random-api.ml/img/cat"
         )  # Make a request
@@ -138,7 +139,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
             return await ctx.send("Please enter text :pager:")
 
         url = f"https://gdcolon.com/tools/gdfont/img/{text}?font=3&color=00ffff"
-    
+
         async with self.session.get(url) as r:
             if r.status != 200:
                 return await ctx.send("Failed to generate textart :x:")
@@ -147,7 +148,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
 
     @commands.command()
     async def catgirl(self, ctx):
-        
+
         request = await self.session.get(
             "http://api.nekos.fun:8080/api/neko"
         )  # Make a request
@@ -162,7 +163,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
             text="Image taken from Nekos.Fun api.\nDon't worry! There are no children or nsfw. Its just anime catgirls uwu"
         )
         await ctx.send(embed=embed)  # Send the embed
-    
+
     @commands.command()
     async def achievement(self, ctx, *, text: str = ""):
         """Achievement unlocked"""
@@ -442,7 +443,9 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
                 except aiohttp.InvalidURL:
                     return await ctx.send("That URL is invalid.")
                 except aiohttp.ClientError:
-                    return await ctx.send("Something went wrong while trying to get the image.")
+                    return await ctx.send(
+                        "Something went wrong while trying to get the image."
+                    )
 
         data = io.BytesIO(data)
         try:
@@ -504,5 +507,6 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
         with contextlib.suppress(discord.NotFound):
             await msg.delete()
 
+
 def setup(bot):
-  bot.add_cog(Images(bot))
+    bot.add_cog(Images(bot))

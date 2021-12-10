@@ -10,12 +10,12 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import BucketType
 from datetime import datetime
-import humor_langs 
+import humor_langs
 import wikipedia
 import asyncpraw
 import urllib.parse
 import ffmpy
-import textwrap 
+import textwrap
 from translate import Translator
 from PyDictionary import PyDictionary
 from udpy import UrbanClient
@@ -27,7 +27,7 @@ from urllib.parse import quote_plus
 import qrcode
 from qrcode.exceptions import DataOverflowError
 from qrcode.image import styledpil, styles
-import inspect,  operator
+import inspect, operator
 from typing import Literal
 
 from utilities.helpers import checks
@@ -42,6 +42,7 @@ translatorf = Translator(from_lang="fr", to_lang="en")
 translatorg = Translator(from_lang="de", to_lang="en")
 dictionary = PyDictionary()
 ud = UrbanClient()
+
 
 async def generate_meme():
     subreddits = [
@@ -58,10 +59,11 @@ async def generate_meme():
         "rareinsults",
     ]
     reddit = asyncpraw.Reddit(
-    client_id=os.getenv("REDDIT_CLIENT"),
-    client_secret=os.getenv("REDDIT_SECRET"),
-    user_agent="Spacebot")
-    
+        client_id=os.getenv("REDDIT_CLIENT"),
+        client_secret=os.getenv("REDDIT_SECRET"),
+        user_agent="Spacebot",
+    )
+
     subreddit = await reddit.subreddit(random.choice(subreddits))
 
     all_subs = []
@@ -169,7 +171,6 @@ Refrain from using colours that would prevent the QR code from working reliably.
 )
 
 
-
 class ColourConverter(commands.ColourConverter):
     async def convert(self, ctx, argument: str):
         extra_map = {"black": 0, "white": 16777215}
@@ -184,6 +185,7 @@ class ColourConverter(commands.ColourConverter):
 
         else:
             return original_arg
+
 
 class Utility(commands.Cog, name="utilities", description="Useful stuff"):
     def __init__(self, bot: commands.Bot):
@@ -226,8 +228,8 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         em.description = f"{error}"
         em.color = 0xEE0000
         await ctx.send(embed=em)
-        me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.channel.id) ,embed=em)
+        me = self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id), embed=em)
 
     async def get_colour_data(self, ctx, shade: Literal["background", "fill"]):
         check = lambda x: all(
@@ -266,12 +268,14 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
             await ctx.send("You took too long to respond, please start over.")
             return False
         else:
-            return {mapper[style_type]["kwarg_key"]: self.styles[style_type][int(message.content)]}
-
+            return {
+                mapper[style_type]["kwarg_key"]: self.styles[style_type][
+                    int(message.content)
+                ]
+            }
 
     async def check_voted(self, userid):
         return await self.bot.topggpy.get_user_vote(userid)
-
 
     @commands.group(
         aliases=["server", "sinfo", "si"],
@@ -573,7 +577,6 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         await ctx.send(embed=embed, view=Google(query))
         answer.clear()
 
-
     @property
     def reactions(self):
         return {
@@ -679,7 +682,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         if not await self.check_voted(ctx.author.id) == True:
             await ctx.send(embed=voteembed, view=Votelink())
         url = "http://tinyurl.com/api-create.php?url=" + link
-        
+
         async with self.session.get(url) as resp:
             new = await resp.text()
         emb = discord.Embed(color=discord.Colour.blurple())
@@ -706,7 +709,6 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         em.description = f"**Definition:** {res.definition}\n**Usage:** {res.example}\n**Votes:** {res.upvotes}:thumbsup:{res.downvotes}:thumbsdown:"
         await ctx.send(embed=em)
 
-
     @commands.command()
     async def reverse(self, ctx, *, text: str):
         """!poow ,ffuts esreveR
@@ -727,7 +729,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         if not await self.check_voted(ctx.author.id) == True:
             await ctx.send(embed=voteembed, view=Votelink())
         async with ctx.channel.typing():
-            
+
             ref = await self.session.get(
                 f"https://disease.sh/v3/covid-19/countries/{country.lower()}"
             )
@@ -769,18 +771,23 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         await ctx.message.delete()
         await ctx.send(f"{ctx.message.author}:\n~~{query}~~ ")
 
-
     @commands.command(name="meme")
     @commands.cooldown(1, 2, BucketType.user)
     async def meme(self, ctx):
         """get a random meme from reddit!"""
+
         class MemeView(discord.ui.View):
             def __init__(self):
                 super().__init__()
 
-            @discord.ui.button(label="Next Meme", emoji="👏", style= discord.ButtonStyle.green)
-            async def next_meme(self, button: discord.ui.Button, interaction: discord.Interaction):
+            @discord.ui.button(
+                label="Next Meme", emoji="👏", style=discord.ButtonStyle.green
+            )
+            async def next_meme(
+                self, button: discord.ui.Button, interaction: discord.Interaction
+            ):
                 await interaction.message.edit(embed=await generate_meme())
+
         await ctx.send(embed=await generate_meme(), view=MemeView())
 
     @commands.command(name="subreddit")
@@ -829,7 +836,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         payload = {"input": query, "appid": api_key}
         headers = {"user-agent": "spacebot"}
         async with ctx.typing():
-            
+
             async with self.session.get(url, params=payload, headers=headers) as r:
                 result = await r.text()
             root = ET.fromstring(result)
@@ -868,7 +875,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         url = f"http://api.wolframalpha.com/v1/simple?appid={api_key}&i={query}%3F&width={width}&fontsize={font_size}&layout={layout}&background={background}&foreground={foreground}&units={units}&ip=127.0.0.1"
 
         async with ctx.typing():
-            
+
             async with self.session.request("GET", url) as r:
                 img = await r.content.read()
                 if len(img) == 43:
@@ -879,9 +886,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
                 wolfram_img = io.BytesIO(img)
                 try:
                     await ctx.channel.send(
-                        file=discord.File(
-                            wolfram_img, f"wolfram{ctx.author.id}.png"
-                        )
+                        file=discord.File(wolfram_img, f"wolfram{ctx.author.id}.png")
                     )
                 except Exception as e:
                     await ctx.send(f"Oops, there was a problem: {e}")
@@ -918,9 +923,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
                             strip = pt.text.replace(" | ", " ").replace("| ", " ")
                             msg += f"- {strip}\n\n"
                 if len(msg) < 1:
-                    msg = (
-                        "There is as yet insufficient data for a meaningful answer."
-                    )
+                    msg = "There is as yet insufficient data for a meaningful answer."
                 await ctx.send(text)
 
     @commands.command(pass_context=True)
@@ -968,7 +971,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         outputname = "{}.{}".format(number, output_format)
         await convertmsg.edit("Downloading...")
         try:
-           
+
             async with self.session.get(file_url) as r:
                 file = await r.content.read()
             with open(input, "wb") as f:
@@ -1216,7 +1219,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         await asyncio.sleep(0.1)
         await ctx.send(text.replace("", " "))
 
-    @commands.command(pass_context=True, aliases=['imgs'])
+    @commands.command(pass_context=True, aliases=["imgs"])
     async def imagesearch(self, ctx, *, query):
         """Google image search. [p]i Lillie pokemon sun and moon"""
         if query[0].isdigit():
@@ -1224,29 +1227,43 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
             query = query[1:]
         else:
             item = 0
-        async with self.session.get("https://www.googleapis.com/customsearch/v1?q=" + quote_plus(query) + "&start=" + '1' + "&key=" + os.getenv("GOOGLE_KEY") + "&cx=" + os.getenv('GOOGLE_CX') + "&searchType=image") as resp:
+        async with self.session.get(
+            "https://www.googleapis.com/customsearch/v1?q="
+            + quote_plus(query)
+            + "&start="
+            + "1"
+            + "&key="
+            + os.getenv("GOOGLE_KEY")
+            + "&cx="
+            + os.getenv("GOOGLE_CX")
+            + "&searchType=image"
+        ) as resp:
             if resp.status != 200:
-                return await ctx.send('Google failed to respond.')
+                return await ctx.send("Google failed to respond.")
             else:
                 result = json.loads(await resp.text())
                 try:
-                    result['items']
+                    result["items"]
                 except:
-                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
-                if len(result['items']) < 1:
-                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
+                    return await ctx.send(
+                        "There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine."
+                    )
+                if len(result["items"]) < 1:
+                    return await ctx.send(
+                        "There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine."
+                    )
                 em = discord.Embed()
                 try:
-                    em.set_image(url=result['items'][item]['link'])
+                    em.set_image(url=result["items"][item]["link"])
                     show_search = True
                     if show_search:
-                        em.set_footer(text="Search term: \"" + query + "\"")
+                        em.set_footer(text='Search term: "' + query + '"')
                     await ctx.send(content=None, embed=em)
                 except:
-                    await ctx.send(result['items'][item]['link'])
-                    await ctx.send("Search term: \"" + query + "\"")
+                    await ctx.send(result["items"][item]["link"])
+                    await ctx.send('Search term: "' + query + '"')
 
-    @commands.command(pass_context=True, aliases=['randim'])
+    @commands.command(pass_context=True, aliases=["randim"])
     async def randomimage(self, ctx, *, query):
         """Get random images every time!"""
         if query[0].isdigit():
@@ -1254,46 +1271,66 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
             query = query[1:]
         else:
             item = 0
-        async with self.session.get("https://www.googleapis.com/customsearch/v1?q=" + quote_plus(query) + "&start=" + '1' + "&key=" + os.getenv("GOOGLE_KEY") + "&cx=" + os.getenv('GOOGLE_CX')+ "&searchType=image") as resp:
+        async with self.session.get(
+            "https://www.googleapis.com/customsearch/v1?q="
+            + quote_plus(query)
+            + "&start="
+            + "1"
+            + "&key="
+            + os.getenv("GOOGLE_KEY")
+            + "&cx="
+            + os.getenv("GOOGLE_CX")
+            + "&searchType=image"
+        ) as resp:
             if resp.status != 200:
-                return await ctx.send('Google failed to respond.')
+                return await ctx.send("Google failed to respond.")
             else:
                 result = json.loads(await resp.text())
                 try:
-                    result['items']
+                    result["items"]
                 except:
-                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
-                if len(result['items']) < 1:
-                    return await ctx.send('There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine.')
+                    return await ctx.send(
+                        "There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine."
+                    )
+                if len(result["items"]) < 1:
+                    return await ctx.send(
+                        "There were no results to your search. Use more common search query or make sure you have image search enabled for your custom search engine."
+                    )
                 em = discord.Embed()
                 try:
-                    n = random.randint(0,10)
-                    em.set_image(url=result['items'][n]['link'])
-                    em.set_footer(text="Search term: \"" + query + "\"")
+                    n = random.randint(0, 10)
+                    em.set_image(url=result["items"][n]["link"])
+                    em.set_footer(text='Search term: "' + query + '"')
                     await ctx.send(content=None, embed=em)
                 except Exception as e:
-                    n = random.randint(0,10)
-                    await ctx.send(result['items'][n]['link'])
-                    await ctx.send("Search term: \"" + query + "\"")
+                    n = random.randint(0, 10)
+                    await ctx.send(result["items"][n]["link"])
+                    await ctx.send('Search term: "' + query + '"')
 
-    @commands.command(aliases=['av'])
-    async def avatar(self,ctx,member:discord.Member = None):
+    @commands.command(aliases=["av"])
+    async def avatar(self, ctx, member: discord.Member = None):
         if not member:
             member = ctx.author
-        await ctx.send(embed= discord.Embed(title=f'Avatar of {member.name}').set_image(url=member.avatar.url))
+        await ctx.send(
+            embed=discord.Embed(title=f"Avatar of {member.name}").set_image(
+                url=member.avatar.url
+            )
+        )
 
     @commands.command()
-    async def youtube(self,ctx,*,query:str):
+    async def youtube(self, ctx, *, query: str):
         """Search YouTube"""
-        
-        html = urllib.request.urlopen(f"https://www.youtube.com/results?search_query={quote_plus(query)}")
+
+        html = urllib.request.urlopen(
+            f"https://www.youtube.com/results?search_query={quote_plus(query)}"
+        )
         video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
         await ctx.send(f"https://www.youtube.com/watch?v={video_ids[0]}")
 
     @commands.command()
     # @commands.cooldown(1, 30, commands.BucketType.user)
     # take screenshot of a web page and send it to the channel
-    async def screenshot(self,ctx, url: str):
+    async def screenshot(self, ctx, url: str):
         async with ctx.typing():
             # check if the url is not nsfw and valid
             # if not await self.is_nsfw(url) and ctx.channel.nsfw is False:
@@ -1380,7 +1417,9 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
                     if update is False:
                         return
                     if shade == "background":
-                        embed_kwargs["color"] = discord.Colour.from_rgb(*update["back_color"])
+                        embed_kwargs["color"] = discord.Colour.from_rgb(
+                            *update["back_color"]
+                        )
                     qrc_kwargs.update(update)
 
             if result == 2:
@@ -1404,7 +1443,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
             buff = io.BytesIO()
             qrc.save(buff, "png")
             buff.seek(0)
-            
+
             embed = discord.Embed(**embed_kwargs)
             embed.set_image(url="attachment://qr.png")
             embed.set_author(name="Generated QR code")
@@ -1419,7 +1458,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
                 await ctx.send(**sender_kwargs)
 
     @commands.command()
-    async def download_reddit_video(self,ctx,videolink:str):
+    async def download_reddit_video(self, ctx, videolink: str):
         """Downloads a reddit video"""
         await ctx.send("Downloading video...")
         await ctx.trigger_typing()
@@ -1428,16 +1467,18 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
 
         if not videolink.endswith(".json"):
             videolink = videolink + ".json"
-        
+
         async with aiohttp.ClientSession() as session:
             async with session.get(videolink) as resp:
                 if resp.status != 200:
                     await ctx.send("Error: Video not found.")
                     return
                 data = await resp.json()
-        url = data[0]["data"]["children"][0]["data"]["secure_media"]["reddit_video"]["fallback_url"]
+        url = data[0]["data"]["children"][0]["data"]["secure_media"]["reddit_video"][
+            "fallback_url"
+        ]
 
-        audio = url.replace("DASH_240.mp4","DASH_audio.mp4")
+        audio = url.replace("DASH_240.mp4", "DASH_audio.mp4")
         await ctx.send(audio)
         urllib.request.urlretrieve(audio, r".\utilities\photos\temp\audio.mp4")
         urllib.request.urlretrieve(url, r".\utilities\photos\temp\video.mp4")
@@ -1445,7 +1486,9 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         try:
             cmd = "ffmpeg -i ./utilities/photos/temp/video.mp4 -i ./utilities/photos/temp/audio.mp4 -c:v copy -c:a aac ./utilities/photos/temp/output.mp4"
             os.system(cmd)
-            await ctx.send("Your request has been queued. This will take 20 seconds. Chillax and enjoy.")
+            await ctx.send(
+                "Your request has been queued. This will take 20 seconds. Chillax and enjoy."
+            )
             await asyncio.sleep(20)
             await ctx.send(file=discord.File(r".\utilities\photos\temp\output.mp4"))
         except Exception as e:
@@ -1453,5 +1496,6 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
             await ctx.send("Error: Failed to download video.")
             return
 
+
 def setup(bot):
-  bot.add_cog(Utility(bot))
+    bot.add_cog(Utility(bot))

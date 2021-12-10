@@ -41,8 +41,8 @@ class Debug(commands.Cog):
         em.description = f"{error}"
         em.color = 0xEE0000
         await ctx.send(embed=em)
-        me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.channel.id) ,embed=em)
+        me = self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id), embed=em)
 
     async def cog_before_invoke(self, ctx):
         """Check for bot owner"""
@@ -207,15 +207,17 @@ class Debug(commands.Cog):
             embed_list = []
             # make an embed list with 50 guilds in each
             for i in range(0, len(guild_list), 25):
-                embed = discord.Embed(title="Guilds", description="\n".join(guild_list[i:i + 50]))
+                embed = discord.Embed(
+                    title="Guilds", description="\n".join(guild_list[i : i + 50])
+                )
                 embed_list.append(embed)
-                
+
             current_view = 0
             view = PageViewer(current_view, embed_list)
-            await ctx.send(embed=embed_list[current_view],view=view)
+            await ctx.send(embed=embed_list[current_view], view=view)
 
     @commands.command()
-    async def reload(self,ctx):
+    async def reload(self, ctx):
         msg = await ctx.send("Reloading cogs...")
 
         with suppress(discord.ExtensionNotLoaded):
@@ -230,7 +232,7 @@ class Debug(commands.Cog):
         await msg.edit(content=":success: | Cogs reloaded!")
 
     @commands.command(hidden=True)
-    async def customstatusadd(self,ctx, *, status):
+    async def customstatusadd(self, ctx, *, status):
         await self.bot.wait_until_ready()
         if not ctx.message.author.id == 512885190251642891:
             return await ctx.send("this command isnt for you")
@@ -239,9 +241,8 @@ class Debug(commands.Cog):
         log_channel = self.bot.get_channel(893465721982562355)
         await log_channel.send(self.bot.statuses)
 
-
     @commands.command(hidden=True)
-    async def customstatusremove(self,ctx, *, remove):
+    async def customstatusremove(self, ctx, *, remove):
         await self.bot.wait_until_ready()
         if not ctx.message.author.id == 512885190251642891:
             return await ctx.send("this command isnt for you")
@@ -252,6 +253,7 @@ class Debug(commands.Cog):
             await ctx.send("There is no status with that name!")
         log_channel = self.bot.get_channel(893465721982562355)
         await log_channel.send(self.bot.statuses)
+
 
 def setup(bot):
     bot.add_cog(Debug(bot))

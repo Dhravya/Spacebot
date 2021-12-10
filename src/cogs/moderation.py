@@ -19,8 +19,8 @@ class Moderation(commands.Cog):
         em.description = f"{error}"
         em.color = 0xEE0000
         await ctx.send(embed=em)
-        me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.channel.id) ,embed=em)
+        me = self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id), embed=em)
 
     @checks.can_kick()
     @commands.command()
@@ -147,8 +147,9 @@ class Moderation(commands.Cog):
             return await ctx.send(
                 "Please specify `,` separated two sentences- Title and description. :page_facing_up:"
             )
-        em = discord.Embed(title=text[0], description=text[1], colour=discord.Color.random(
-        )).set_author(name=str(ctx.author.name), icon_url=str(ctx.author.avatar.url))
+        em = discord.Embed(
+            title=text[0], description=text[1], colour=discord.Color.random()
+        ).set_author(name=str(ctx.author.name), icon_url=str(ctx.author.avatar.url))
         await channel.send(embed=em)
         await ctx.send("Announcement sent!!!")
 

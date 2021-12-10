@@ -14,15 +14,18 @@ class DiscordTogether(commands.Cog):
         em.description = f"{error}"
         em.color = 0xEE0000
         await ctx.send(embed=em)
-        me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.channel.id) ,embed=em)
+        me = self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id), embed=em)
+
     """Amazing Discord Multiplayer voice channel games!!!!!"""
 
     @commands.command()
     async def youtube_together(self, ctx):
         """Watch youtube together with your friends!"""
         try:
-            link = await self.bot.togetherControl.create_link(ctx.author.voice.channel.id, 'youtube')
+            link = await self.bot.togetherControl.create_link(
+                ctx.author.voice.channel.id, "youtube"
+            )
             await ctx.send(f"Click the blue link!\n{link}")
         except:
             await ctx.send("You need to be in a voice channel to play!")
@@ -31,16 +34,20 @@ class DiscordTogether(commands.Cog):
     async def chess(self, ctx):
         """Play a game of chess"""
         try:
-            link = await self.bot.togetherControl.create_link(ctx.author.voice.channel.id, 'chess')
+            link = await self.bot.togetherControl.create_link(
+                ctx.author.voice.channel.id, "chess"
+            )
             await ctx.send(f"Click the blue link!\n{link}")
         except:
             await ctx.send("You need to be in a voice channel to play!")
 
     @commands.command()
     async def poker(self, ctx):
-        """Poker game """
+        """Poker game"""
         try:
-            link = await self.bot.togetherControl.create_link(ctx.author.voice.channel.id, 'poker')
+            link = await self.bot.togetherControl.create_link(
+                ctx.author.voice.channel.id, "poker"
+            )
             await ctx.send(f"Click the blue link!\n{link}")
         except:
             await ctx.send("You need to be in a voice channel to play!")
@@ -49,7 +56,9 @@ class DiscordTogether(commands.Cog):
     async def betrayal_game(self, ctx):
         """Play with friends only to be betrayed"""
         try:
-            link = await self.bot.togetherControl.create_link(ctx.author.voice.channel.id, 'betrayal')
+            link = await self.bot.togetherControl.create_link(
+                ctx.author.voice.channel.id, "betrayal"
+            )
             await ctx.send(f"Click the blue link!\n{link}")
         except:
             await ctx.send("You need to be in a voice channel to play!")
@@ -58,7 +67,9 @@ class DiscordTogether(commands.Cog):
     async def fishington(self, ctx):
         """Go fishing in fishington"""
         try:
-            link = await self.bot.togetherControl.create_link(ctx.author.voice.channel.id, 'fishing')
+            link = await self.bot.togetherControl.create_link(
+                ctx.author.voice.channel.id, "fishing"
+            )
             await ctx.send(f"Click the blue link!\n{link}")
         except:
             await ctx.send("You need to be in a voice channel to play!")
@@ -67,7 +78,9 @@ class DiscordTogether(commands.Cog):
     async def lettertile(self, ctx):
         """Play a game of scramble with friends!"""
         try:
-            link = await self.bot.togetherControl.create_link(ctx.author.voice.channel.id, 'letter-tile')
+            link = await self.bot.togetherControl.create_link(
+                ctx.author.voice.channel.id, "letter-tile"
+            )
             await ctx.send(f"Click the blue link!\n{link}")
         except:
             await ctx.send("You need to be in a voice channel to play!")
@@ -76,7 +89,9 @@ class DiscordTogether(commands.Cog):
     async def wordsnack(self, ctx):
         """IM too dumb for this lmfao"""
         try:
-            link = await self.bot.togetherControl.create_link(ctx.author.voice.channel.id, 'word-snack')
+            link = await self.bot.togetherControl.create_link(
+                ctx.author.voice.channel.id, "word-snack"
+            )
             await ctx.send(f"Click the blue link!\n{link}")
         except:
             await ctx.send("You need to be in a voice channel to play!")
@@ -85,7 +100,9 @@ class DiscordTogether(commands.Cog):
     async def doodlecrew(self, ctx):
         """Play a game of scribbl with your friends!"""
         try:
-            link = await self.bot.togetherControl.create_link(ctx.author.voice.channel.id, 'doodle-crew')
+            link = await self.bot.togetherControl.create_link(
+                ctx.author.voice.channel.id, "doodle-crew"
+            )
             await ctx.send(f"Click the blue link!\n{link}")
         except:
             await ctx.send("You need to be in a voice channel to play!")
