@@ -781,8 +781,12 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
             @discord.ui.button(label="Next Meme", emoji="👏", style= discord.ButtonStyle.green)
             async def next_meme(self, button: discord.ui.Button, interaction: discord.Interaction):
                 await interaction.message.edit(embed=await generate_meme())
-        await ctx.send(embed=await generate_meme(), view=MemeView())
-
+            await ctx.send(embed=await generate_meme(), view=MemeView())
+            async def interaction_check(self, interaction) -> bool:
+                    if interaction.user != self.ctx.author:
+                        await interaction.response.send_message("You didn't request the command", ephemeral=True)
+                    else:
+                        return True
     @commands.command(name="subreddit")
     @commands.cooldown(1, 2, BucketType.user)
     async def subreddit(self, ctx, *, subreddit):
