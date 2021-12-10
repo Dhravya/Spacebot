@@ -46,16 +46,7 @@ ud = UrbanClient()
 async def generate_meme():
     subreddits = [
         "dankmemes",
-        "memes",
-        "meme",
-        "wholesomememes",
-        "comedyheaven",
-        "pewdiepiesubmissions",
-        "KidsAreFuckingStupid",
-        "cursedcomments",
-        "HolUp",
-        "blursedimages",
-        "rareinsults",
+        "memes"
     ]
     reddit = asyncpraw.Reddit(
     client_id=os.getenv("REDDIT_CLIENT"),
