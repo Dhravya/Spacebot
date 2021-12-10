@@ -31,7 +31,7 @@ dateparser
 qrcode
 jishaku
 lavalink
-dotenv
+python-dotenv
 aiodns
 Brotli
 cchardet
