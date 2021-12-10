@@ -47,16 +47,7 @@ ud = UrbanClient()
 async def generate_meme():
     subreddits = [
         "dankmemes",
-        "memes",
-        "meme",
-        "wholesomememes",
-        "comedyheaven",
-        "pewdiepiesubmissions",
-        "KidsAreFuckingStupid",
-        "cursedcomments",
-        "HolUp",
-        "blursedimages",
-        "rareinsults",
+        "memes"
     ]
     reddit = asyncpraw.Reddit(
         client_id=os.getenv("REDDIT_CLIENT"),
@@ -793,9 +784,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
             async def next_meme(
                 self, button: discord.ui.Button, interaction: discord.Interaction
             ):
-                await interaction.message.edit(embed=await generate_meme())
- 
-
+                await interaction.message.edit(embed=await generate_meme()) 
 
         await ctx.send(embed=await generate_meme(), view=MemeView())
 
