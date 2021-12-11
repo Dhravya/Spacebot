@@ -262,7 +262,7 @@ class BotCommands(commands.Cog):
     async def ping(self, ctx):
         """checks ping and latency"""
         await ctx.send(
-            f"<a:angrypinghappy:896107915813982298> Pong! My ping currently is {round(self.bot.latency * 1000)}ms :white_check_mark:"
+            f"🟢 Pong! My ping currently is {round(self.bot.latency * 1000)}ms :white_check_mark:"
         )
 
     @commands.command()
