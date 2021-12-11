@@ -15,7 +15,6 @@ from rich.theme import Theme
 import asyncpraw
 import topgg
 import humor_langs
-from discord_together import DiscordTogether
 from discord.ext import commands
 import discord
 
@@ -77,13 +76,6 @@ bot.reddit = asyncpraw.Reddit(
 
 bot.db = sqlite3.connect("database.db")
 bot.dbcursor = bot.db.cursor()
-
-
-async def Dtogether(bot):
-    bot.togetherControl = await DiscordTogether(os.getenv("BOT_TOKEN"))
-
-
-asyncio.get_event_loop().run_until_complete(Dtogether(bot))
 
 
 async def session(bot):

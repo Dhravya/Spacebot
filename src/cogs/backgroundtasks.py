@@ -6,6 +6,7 @@ from datetime import datetime
 import re
 from utilities.helpers.utils import VoteReminder, Votelink, Suicide
 
+thank_words = "thanks|thank you|thank|ty"
 
 class BackgroundTasks(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -68,8 +69,8 @@ class BackgroundTasks(commands.Cog):
             )
             self.bot.db.commit()
 
-        thank_words = ["thanks", "thank you", "thank"]
-        if any(word in message.content.lower() for word in thank_words):
+        thank_search = re.search(thank_words, message.content.lower())
+        if thank_search:
             if message.mentions:
                 user = message.mentions[0]
                 if user.bot:

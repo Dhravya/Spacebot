@@ -517,7 +517,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         embed.set_author(name="Member Count", icon_url=self.bot.user.avatar.url)
         embed.add_field(name="Current Member Count:", value=ctx.guild.member_count)
         embed.set_footer(text=ctx.guild, icon_url=ctx.guild.icon.url)
-        embed.timestamp = datetime.datetime.utcnow()
+        embed.timestamp = datetime.utcnow()
 
         await ctx.send(embed=embed)
 
@@ -775,7 +775,7 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
             async def interaction_check(self, interaction) -> bool:
                 if interaction.user != self.ctx.author:
                         await interaction.response.send_message("You didn't request the command", ephemeral=True)
-                    else:
+                else:
                         return True
 
             @discord.ui.button(
