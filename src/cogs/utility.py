@@ -517,7 +517,6 @@ class Utility(commands.Cog, name="utilities", description="Useful stuff"):
         embed.set_author(name="Member Count", icon_url=self.bot.user.avatar.url)
         embed.add_field(name="Current Member Count:", value=ctx.guild.member_count)
         embed.set_footer(text=ctx.guild, icon_url=ctx.guild.icon.url)
-        embed.timestamp = datetime.utcnow()
 
         await ctx.send(embed=embed)
 
