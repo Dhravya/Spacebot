@@ -315,7 +315,7 @@ class BackgroundTasks(commands.Cog):
                 continue
             last_voted_datetime = user[2]
             last_voted_datetime = datetime.strptime(
-                last_voted_datetime, "%Y-%m-%dT%H:%M:%S.%f"
+                last_voted_datetime, "%Y-%m-%d %H:%M:%S.%f"
             )
             now = datetime.now()
             delta = now - last_voted_datetime
