@@ -36,7 +36,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
     async def wanted(self, ctx, user: discord.Member = None):
         user = ctx.author if not user else user
 
-        wanted = Image.open("utilities/photos/wanted.jpg")
+        wanted = Image.open("utilities/images/wanted.jpg")
         asset = user.avatar.with_format("jpg")
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
@@ -52,7 +52,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
     @commands.command()
     async def kill(self, ctx, user: discord.Member = None):
         user = ctx.author if not user else user
-        amogusimage = Image.open(f"utilities/photos/kill2.jfif")
+        amogusimage = Image.open(f"utilities/images/kill2.jfif")
         asset1 = user.avatar.with_format("jpg")
         asset2 = ctx.author.avatar.with_format("jpg")
         data1 = BytesIO(await asset1.read())
@@ -75,7 +75,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
     async def disfine(self, ctx, user: discord.Member = None):
         user = ctx.author if not user else user
 
-        wanted = Image.open("utilities/photos/finelol.jpeg")
+        wanted = Image.open("utilities/images/finelol.jpeg")
         asset = user.avatar.with_format("jpg")
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
@@ -92,7 +92,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
     async def affect(self, ctx, user: discord.Member = None):
         user = ctx.author if not user else user
 
-        wanted = Image.open("utilities/photos/affect.png")
+        wanted = Image.open("utilities/images/affect.png")
         asset = user.avatar.with_format("png")
         data = BytesIO(await asset.read())
         pfp = Image.open(data)
