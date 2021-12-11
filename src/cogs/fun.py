@@ -430,7 +430,7 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
             except asyncio.TimeoutError:
                 return await ctx.send("Bye :wave:")
             else:
-                if "bye" in msg.content.lower():
+                if "bye" in msg.content.lower() or "stop" in msg.content.lower():
                     return await ctx.send("Bye :wave:")
                 try:
                     async with ctx.typing():
