@@ -6,7 +6,7 @@ from datetime import datetime
 import re
 from utilities.helpers.utils import VoteReminder, Votelink, Suicide
 
-thank_words = "\bthanks\b|\bthank you\b|\bthank\b|\bty\b"
+thank_words = "\b(thanks|thank you|thank|ty)\b"
 
 class BackgroundTasks(commands.Cog):
     def __init__(self, bot: commands.Bot):
