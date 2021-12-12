@@ -890,19 +890,14 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
     async def top_rep(self, ctx):
         """Shows the top 10 users with the most reputation"""
         self.bot.dbcursor.execute(
-            "SELECT id FROM Users WHERE guild_id=? ORDER BY thank_count DESC",
+            "SELECT id FROM Users WHERE guild_id=? ORDER BY thank_count DESC LIMIT 10",
             (ctx.guild.id,),
         )
 
         result = self.bot.dbcursor.fetchall()
         result = [x[0] for x in result]
-        if len(result) < 10:
-            await ctx.send(
-                "There are not enough users with reputation to show the top 10!"
-            )
-            return
-        result = result[:10]
-        result = [discord.utils.get(ctx.guild.members, id=x) for x in result]
+
+        result = [self.bot.get_user(x) for x in result]
         result = [x.display_name for x in result]
         await ctx.send("\n".join(result))
 
