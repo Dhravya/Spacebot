@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  spacebotv4:
+    image: spacebotv4
+    build:
+      context: .
+      dockerfile: ./Dockerfile

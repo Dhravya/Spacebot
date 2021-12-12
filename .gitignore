@@ -4,3 +4,4 @@ database.db
 Procfile
 .replit
 env/
+.vscode
