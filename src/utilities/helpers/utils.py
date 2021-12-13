@@ -3,11 +3,14 @@ from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 import discord
 
-def get_prefix(bot,message): ##first we define get_prefix
+
+def get_prefix(bot, message):  ##first we define get_prefix
     # gets the server prefix from the bot database
     # and returns it
     try:
-        bot.dbcursor.execute("SELECT prefix FROM Servers WHERE id = ?", (message.guild.id,))
+        bot.dbcursor.execute(
+            "SELECT prefix FROM Servers WHERE id = ?", (message.guild.id,)
+        )
         prefix = bot.dbcursor.fetchone()
         if prefix is None:
             return "."
@@ -16,10 +19,12 @@ def get_prefix(bot,message): ##first we define get_prefix
     except:
         return "."
 
+
 def random_percentage():
     f = random.randint(0, 100)
     g = random.randint(0, 100)
     return str(f) + "." + str(g)
+
 
 class Votelink(discord.ui.View):
     def __init__(self):
@@ -79,6 +84,7 @@ MORSE_CODE_DICT = {
     "(": "-.--.",
     ")": "-.--.-",
 }
+
 
 def encrypt(message):
     cipher = ""
@@ -165,7 +171,6 @@ class Google(discord.ui.View):
         self.add_item(discord.ui.Button(label="Click Here", url=url))
 
 
-
 class Invite(discord.ui.View):
     def __init__(self):
         super().__init__()
@@ -177,6 +182,7 @@ class Invite(discord.ui.View):
             )
         )
 
+
 class VoteReminder(discord.ui.View):
     def __init__(self, bot, user):
         super().__init__()
@@ -184,20 +190,26 @@ class VoteReminder(discord.ui.View):
         self.user = user
 
     @discord.ui.button(label="Click here!", style=discord.ButtonStyle.success)
-    async def enable_vote(self,button, interaction:discord.Interaction):
-        
-        i = await interaction.response.send_message("Adding your user ID to Vote reminder...")
+    async def enable_vote(self, button, interaction: discord.Interaction):
+
+        i = await interaction.response.send_message(
+            "Adding your user ID to Vote reminder..."
+        )
         try:
-            self.bot.dbcursor.execute("UPDATE Users SET vote_reminder = 1 WHERE id = ?", (self.user.id,))
+            self.bot.dbcursor.execute(
+                "UPDATE Users SET vote_reminder = 1 WHERE id = ?", (self.user.id,)
+            )
             self.bot.db.commit()
             await self.user.send("Successfully added your user ID to Vote reminder!")
         except Exception as e:
             print(e)
-            await self.user.send("An error occured while adding your user ID to Vote reminder. Kindly use the command .vote to be prompted with the same message.")
+            await self.user.send(
+                "An error occured while adding your user ID to Vote reminder. Kindly use the command .vote to be prompted with the same message."
+            )
+
 
 class Suicide(discord.ui.View):
     def __init__(self):
         super().__init__()
 
-        self.add_item(discord.ui.Button(
-            label="Click Here", url="https://suicide.org"))
+        self.add_item(discord.ui.Button(label="Click Here", url="https://suicide.org"))

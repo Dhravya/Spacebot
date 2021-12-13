@@ -82,8 +82,7 @@ class TicTacToe(discord.ui.View):
 
         # Check vertical
         for line in range(3):
-            value = self.board[0][line] + \
-                self.board[1][line] + self.board[2][line]
+            value = self.board[0][line] + self.board[1][line] + self.board[2][line]
             if value == 3:
                 return self.O
             elif value == -3:
@@ -123,8 +122,8 @@ class Games(commands.Cog):
         em.description = f"{error}"
         em.color = 0xEE0000
         await ctx.send(embed=em)
-        me =self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.channel.id) ,embed=em)
+        me = self.bot.get_user(881861601756577832)
+        await me.send(str(ctx.channel.id), embed=em)
 
     @commands.command(name="connect4")
     async def connect4(self, ctx: commands.Context, opponent="", width=7, height=6):
@@ -241,8 +240,7 @@ class Games(commands.Cog):
                     em.title = f"{player2} challenged {player1} to a game of Connect 4"
                 em.description = f"{getDisplay()}"
                 em.color = 0x444444
-                em.add_field(name=f"{player1}",
-                             value="Game timed out", inline=False)
+                em.add_field(name=f"{player1}", value="Game timed out", inline=False)
                 await boardMessage.edit(embed=em)
                 return
             except ValueError:
@@ -464,8 +462,7 @@ class Games(commands.Cog):
             em = discord.Embed()
             em.title = f"Connect 4 - {player1} wins!"
             em.description = f"{getDisplay()}"
-            em.add_field(name="Reason:",
-                         value=f"{winningComment}", inline=False)
+            em.add_field(name="Reason:", value=f"{winningComment}", inline=False)
             if player1 == player2:
                 em.add_field(
                     name="Also:", value=f"They won against themself", inline=False
@@ -476,15 +473,13 @@ class Games(commands.Cog):
             em = discord.Embed()
             em.title = f"Connect 4 - {player2} wins!"
             em.description = f"{getDisplay()}"
-            em.add_field(name="Reason:",
-                         value=f"{winningComment}", inline=False)
+            em.add_field(name="Reason:", value=f"{winningComment}", inline=False)
             if player1 == player2:
                 em.add_field(
                     name="Also:", value=f"They won against themself", inline=False
                 )
             em.color = 0x444444
             await boardMessage.edit(embed=em)
-
 
     @commands.command(name="21dares", aliases=["truth_or_dare"])
     async def tod(self, ctx, user: discord.Member = None, channel=discord.TextChannel):
@@ -603,7 +598,6 @@ class Games(commands.Cog):
         async for x in ctx.channel.history(limit=number):
             toDelete.append(x)
         return toDelete
-
 
     @commands.command(name="2048")
     async def twenty(self, ctx):
