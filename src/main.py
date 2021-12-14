@@ -17,6 +17,7 @@ import topgg
 import humor_langs
 from discord.ext import commands
 import discord
+from googletrans import Translator
 
 from utilities.helpers.help import Help_Embed
 from utilities.helpers.utils import get_prefix
@@ -612,6 +613,17 @@ async def youtube(ctx, *, query):
     video_ids = re.findall(r"watch\?v=(\S{11})", html.read().decode())
     await ctx.respond(f"https://www.youtube.com/watch?v={video_ids[0]}")
 
+
+translator = Translator()
+@bot.slash_command()
+async def translate(ctx,query):
+    result = translator.translate(query)
+    await ctx.respond(embed=discord.Embed(title=f"Translation",description=result.text).set_footer(text=f"{result.src} to {result.dest}"))
+
+@bot.message_command(name="Translate to English")
+async def translate_to_en(ctx,message:discord.Message):
+    result = translator.translate(message.content)
+    await ctx.respond(embed=discord.Embed(title=f"Translation",description=result.text).set_footer(text=f"{result.src} to {result.dest}"))
 
 #!___________________________________________________________________________
 
