@@ -1,4 +1,5 @@
 import random, requests
+from async_timeout import asyncio
 from urllib.parse import quote_plus
 from bs4 import BeautifulSoup
 import discord
@@ -201,6 +202,8 @@ class VoteReminder(discord.ui.View):
             )
             self.bot.db.commit()
             await self.user.send("Successfully added your user ID to Vote reminder!")
+            await asyncio.sleep(43200)
+            await self.user.send("Hey there! You haven't voted for me in 12 hours! Please vote for me! https://top.gg/bot/881862674051391499")
         except Exception as e:
             print(e)
             await self.user.send(
