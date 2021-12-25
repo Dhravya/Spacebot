@@ -21,7 +21,7 @@ class HelpOptions(discord.ui.View):
         self.add_item(
             discord.ui.Button(
                 label="Join the server for chill and hangout!",
-                url="https://discord.gg/Ws4Q42QjY3",
+                url="https://dsc.gg/spacebt",
                 row=1,
             )
         )
@@ -45,12 +45,12 @@ class HelpOptions(discord.ui.View):
             ),
             discord.SelectOption(
                 label="Music and Moderation commands",
-                description="Music and moderation commands!!",
+                description="Music and moderation commands",
                 emoji="🎶",
             ),
             discord.SelectOption(
                 label="Utility",
-                description="utilities like translate, convert, and more!",
+                description="utilities like translate, convert, and more",
                 emoji="⚙️",
             ),
             discord.SelectOption(
@@ -60,7 +60,7 @@ class HelpOptions(discord.ui.View):
             ),
             discord.SelectOption(
                 label="Games and Miscellaneous",
-                description="Fun Games and Miscellaneous commands!!",
+                description="Fun Games and Miscellaneous commands",
                 emoji="🎭",
             ),
             discord.SelectOption(
@@ -163,7 +163,7 @@ class BotCommands(commands.Cog):
         )
         em.add_field(
             name="Website",
-            value="[dhravya.github.io/portfolio-website](https://dhravya.github.io/portfolio-website)",
+            value="[dhravya.me](https://dhravya.me)",
         )
         em.add_field(
             name="Twitter",
@@ -176,7 +176,7 @@ class BotCommands(commands.Cog):
             inline=False,
         )
         em.add_field(
-            name="Check out spacebot!",
+            name="Check out spacebot",
             value="[Link to topgg page!](https://top.gg/bot/881862674051391499)\n[Link to website!](https://spacebot.ga)",
             inline=False,
         )
@@ -186,23 +186,23 @@ class BotCommands(commands.Cog):
         )
         await ctx.send(embed=em)
 
-    @commands.command(description="Invite our bot to your server!!")
+    @commands.command(description="Invite our bot to your server!")
     async def invite(self, ctx):
 
         await ctx.send(
-            "***Add SpaceBot to your server now!*** https://discord.com/api/oauth2/authorize?client_id=881862674051391499&permissions=0&scope=bot",
+            "***Add SpaceBot to your server now!*** https://dsc.gg/spacebt",
             view=Invite(),
         )
 
     @commands.command()
     async def suggestdev(self, ctx, *, suggestion):
-        channel = self.bot.get_channel(896739923204374559)
+        channel = self.bot.get_channel(924297401500577812)
         embed = discord.Embed(
             colour=discord.Color.blurple(),
             title=f"{ctx.author} Suggested:",
             description=suggestion,
         )
-        await ctx.send("Suggestion sent! Thank You!", embed=embed)
+        await ctx.send("Suggestion sent to the devs, Thank you!", embed=embed)
         suggested = await channel.send(embed=embed)
         await suggested.add_reaction("👍")
         await suggested.add_reaction("👎")
@@ -211,8 +211,9 @@ class BotCommands(commands.Cog):
     async def vote(self, ctx):
         em = discord.Embed(
             title="Support Spacebot!😃🥰",
-            description="Here's the vote link! https://top.gg/bot/881862674051391499/vote \nBy the way, thanks for voting :)",
+            description="Here's the vote link! https://top.gg/bot/881862674051391499/vote",
         )
+        em.set_footer(text="Thanks for voting in advance :)")
         await ctx.send(embed=em)
 
     @commands.command(hidden=True)
