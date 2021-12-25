@@ -9,7 +9,7 @@ from PIL import ImageOps
 import pyimgur
 
 im = pyimgur.Imgur(os.getenv("IMGUR_API_KEY"))
-afp = alexflipnote.Client(os.getenv("AFP_KEY"))
+afp = alexflipnote.Client(token = os.getenv("AFP_KEY"))
 
 
 class Images(commands.Cog, name="Image", description="Image Commands"):
