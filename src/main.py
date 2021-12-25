@@ -626,10 +626,11 @@ async def translate_to_en(ctx,message:discord.Message):
     await ctx.respond(embed=discord.Embed(title=f"Translation",description=result.text).set_footer(text=f"{result.src} to {result.dest}"))
 
 
-from dhravyaAPI import DhravyaAPI
+
+from dhravyaAPI import DhravyaAPI as api
 from PIL import Image
 from io import BytesIO
-client = DhravyaAPI()
+client = api()
 
 @bot.message_command(name="Convert to QR code")
 async def to_qr(ctx,message:discord.Message):
@@ -637,6 +638,7 @@ async def to_qr(ctx,message:discord.Message):
         await ctx.respond(file=discord.File(fp=BytesIO(client.qrcode(message.content)),filename="qr.png"))
     except Exception as e:
         await ctx.respond("An error occured: "+e)
+
 
 
 #!___________________________________________________________________________
