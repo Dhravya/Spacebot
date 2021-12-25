@@ -3,21 +3,21 @@ from typing import List, Optional
 
 cog_help = {
     "Fun": """
-        Fun commands for everyone!!
+        A list of fun commands to vibe to
 
         Fun Commands
-        `.ai`
-        `.akinator`
+        `.ai` - Start a AI chatbot session
+        `.akinator` - Make akinator guess someone
         `.annoy` – Usage: annoy @b1nzy#1337 50
         `.asktrump` – Ask Donald Trump a question!
         `.beer` – Give someone a beer! 🍻
         `.britainify` – Can you pass me a bo'le o' wo'e'r
         `.clownrate` – Reveal someone's clownery.
         `.coinflip` – Coinflip!
-        `.cool`
+        `.cool` - Find out how cool a user is
         `.compliment` – Compliment someone!
         `.dadjoke` – Read a random dad joke
-        `.dare`
+        `.dare` - Get a random dare
         `.darkjoke` – Read a random dark joke
         `.eightball` – "The eight ball guides you in every part of you life"
         `.f` – Press F to pay respect
@@ -30,7 +30,7 @@ cog_help = {
         `.owofy` – Converts your message in UwUs. its not worth trying, trust me.
         `.rainbow` – Make a happy rainbow!
         `.randomcomic` – Get a comic from xkcd.
-        `.roast`
+        `.roast` - Get a sick roast line from our vault of roasts
         `.sanitycheck` – Check your sanity.
         `.simprate` – Find out how much someone is simping for something.
         `.slap` – when someone acts just wayy too dumb
@@ -38,11 +38,11 @@ cog_help = {
         `.talk_rude` – insults the sender... better not do this
         `.tenor` – Random gif from tenor
         `.thank` – Thank someone!
-        `.thankcount`
-        `.truth`
+        `.thankcount` - Check your reputation points
+        `.truth` - Get a random "truth" question
         `.webhook` - Creates a temperory webhook to mimic yourself!""",
     "Config": """
-        Make Spacebot your own !!!
+        Make Spacebot your own!
 
         censoredwords         Get the list of censored words of the server
         changeprefix          Change the prefix of the bot
@@ -75,13 +75,12 @@ cog_help = {
         `kick`, `ban`, `mute`, `unmute`, `wordcensor`, `removecensor`, `prune`, `clean`, `warn`, `announce` 
         """,
     "Bot Commands": """
-        `.advancedhelp`
         `.botinfo` – Bot stats.
-        `.dev`
-        `.invite`
+        `.dev` - Contact the dev
+        `.invite` - Invite SpaceBot
         `.ping` – checks ping and latency
-        `.suggestdev`
-        `.vote`""",
+        `.suggestdev` - Send a suggestion to the bot devs
+        `.vote` - Vote for SpaceBot""", 
     "Utility": """
         Useful stuff
 
@@ -148,35 +147,35 @@ cog_help = {
         .wordsnack – IM too dumb for this lmfao
         .youtube_together – Watch youtube together with your friends!""",
     "Image Commands": """
-        Image Commands!!
+        Image Commands
         .achievement – Achievement unlocked
-        .affect
+        .affect - No it doesn't affect my baby
         .amiajoke
-        .bad
-        .birb
+        .bad 
+        .birb - Get a random birb image
         .calling – Call meme
-        .captcha – Make a custom fake captcha!!
-        .cat
-        .catgirl
-        .coffee
-        .colourify
+        .captcha – Make a custom fake captcha
+        .cat - Get a random cat image
+        .catgirl - Get a random catgirl image
+        .coffee - Get a random coffe image
+        .colourify 
         .didumean
-        .disfine
-        .dog
+        .disfine - This is fine...
+        .dog - Get a random doggo image
         .drake
         .factimage – Make a custom fake fact image!!
         .filter – Deepfry avatar
-        .floor
+        .floor 
         .fml
-        .imgur
-        .kill
-        .salty
+        .imgur - Upload an image to imgur
+        .kill - Kill someone (on discord obviously)
+        .salty 
         .scroll
         .shame
-        .ship
+        .ship - Ship someone
         .textart – Generate cool font
-        .wanted
-        .what
+        .wanted - Big bounty on this user
+        .what 
         .invert - Inverts the colours of an image!""",
 }
 FACES = [
@@ -617,18 +616,18 @@ def Help_Embed():
         > SpaceBot is a feature packed bot with tons of commands. It is one of the best multipurpose bots with various modules like
         > Fun, Utility, Games, Music, Moderation and Levelling!
     
-        ⚠️ *What's new??* - MUSIC OVERHAUL AND OPEN SOURCE!!!
+        ⚠️ *What's new?* - MUSIC OVERHAUL AND OPEN SOURCE!
         > Load balancing has been implemented to music. 
         > This means that Spacebot will get your server's registered location and play music in the same country!
 
         > FILTERS - as of right now, there is bassboost, treble, jazz, pop filters. 
-            There will be more, but i need a music enthusiast cause i dont understand this
+            There will be more, but I need a music enthusiast cause I dont understand this
 
         > SPACEBOT IS NOW OPEN SOURCE! if you know a little bit of python, consider contributing or just 
-        ⭐ this project! https://github.com/dhravya/spacebot-discord
+        star this project! https://github.com/dhravya/spacebot-discord
 
-        Just click on this link to enable Slash commands!! [dsc.gg/spacebt](https://dsc.gg/spacebt)
-        > You can also use the command `.help` to get the help menu.
+        Click on this link to enable Slash commands! [dsc.gg/spacebt](https://dsc.gg/spacebt)
+        > You can also do `.help` to get the help menu.
 
         ```Invite me using the .invite command!```
         """,
