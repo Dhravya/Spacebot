@@ -1,5 +1,5 @@
 import discord
-import time, datetime, os
+import time, datetime
 from discord.ext import commands
 from utilities.helpers.utils import Invite
 from utilities.helpers.help import Help_Embed, cog_help
@@ -16,23 +16,30 @@ class HelpEmbed(discord.Embed):
 
 
 class HelpOptions(discord.ui.View):
-    def __init__(self):
+    def __init__(self, user):
         super().__init__()
+        self.user = user
         self.add_item(
             discord.ui.Button(
                 label="Join the server for chill and hangout!",
-                url="https://dsc.gg/spacebt",
+                url="https://dsc.gg/thecodinghorizon",
                 row=1,
             )
         )
         self.add_item(
-            discord.ui.Button(label="Website", url="https://spacebot.ga", row=1)
+            discord.ui.Button(label="Developer", url="https://dhravya.me", row=1)
         )
+        self.add_item(
+            discord.ui.Button(label="Hosted on Epikhost", url="https://epikhost.xyz", row=1, emoji="<:epikhostlogo:859403955531939851>", style= discord.ButtonStyle.success)
+        )
+
 
     @discord.ui.button(label="Delete", style=discord.ButtonStyle.red, emoji="🗑️", row=2)
     async def delete_button(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
+        if not interaction.user == self.user:
+            return await interaction.response.send_message("You didn't ask for the help command!", ephemeral=True)
         await interaction.message.delete()
 
     @discord.ui.select(
@@ -76,6 +83,9 @@ class HelpOptions(discord.ui.View):
         ],
     )
     async def select_callback(self, select, interaction):
+        if not interaction.user == self.user:
+            return await interaction.response.send_message("You didn't ask for the help command!", ephemeral=True)
+
         if select.values[0]:
             await interaction.response.edit_message(
                 embed=discord.Embed(
@@ -97,12 +107,13 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
         try:
 
-            m = await ctx.send(embed=Help_Embed(), view=HelpOptions())
-            await asyncio.sleep(120)
-            try:
-                await m.edit("This help session expired", embed=Help_Embed(), view=None)
-            except:
-                pass
+            view  = HelpOptions(user=ctx.author)
+            m = await ctx.send(embed=Help_Embed(), view=view)
+            await asyncio.sleep(60)
+            for button in view.children:
+                button.disabled = True
+            await m.edit(view=view)
+
         except discord.Forbidden:
             await ctx.send(
                 """Hey! it looks like i am missing some permissions. Please give me the following permissions:\n
