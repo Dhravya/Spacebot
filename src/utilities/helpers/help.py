@@ -609,26 +609,16 @@ FACES = [
 ]
 
 
+
 def Help_Embed():
     em = discord.Embed(
-        title="🔴 ***SPACEBOT HELP***",
+        title="***SpaceBot Help***",
         description=f"""
-        > SpaceBot is a feature packed bot with tons of commands. It is one of the best multipurpose bots with various modules like
+        > I'm a feature-packed bot with tons of commands.
+        > Spacebot is one of the best multipurpose bots with
         > Fun, Utility, Games, Music, Moderation and Levelling!
-    
-        ⚠️ *What's new?* - MUSIC OVERHAUL AND OPEN SOURCE!
-        > Load balancing has been implemented to music. 
-        > This means that Spacebot will get your server's registered location and play music in the same country!
 
-        > FILTERS - as of right now, there is bassboost, treble, jazz, pop filters. 
-            There will be more, but I need a music enthusiast cause I dont understand this
-
-        > SPACEBOT IS NOW OPEN SOURCE! if you know a little bit of python, consider contributing or just 
-        star this project! https://github.com/dhravya/spacebot-discord
-
-        Click on this link to enable Slash commands! [dsc.gg/spacebt](https://dsc.gg/spacebt)
-        > You can also do `.help` to get the help menu.
-
+        [[GitHub]](https://github.com/dhravya/spacebot-discord) [[Vote]](https://top.gg/bot/881862674051391499/vote)
         ```Invite me using the .invite command!```
         """,
     )
