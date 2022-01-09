@@ -13,7 +13,22 @@ class HelpEmbed(discord.Embed):
         text = "Use help [command] or help [category] for more information | <> is required | [] is optional"
         self.set_footer(text=text)
         self.color = discord.Color.blurple()
+        
+def cog_help(cog):
+    embed = discord.Embed(
+        title=f"{cog} Commands", colour=discord.Color.random()
+    )
+    if cog.description:
+        embed.description = cog.description
 
+    for command in cog.get_commands():
+        embed.add_field(
+            name=command.qualified_name,
+            value=f"{command.description}:" or "No Description:",
+            inline=True,
+        )
+
+    return embed
 
 class HelpOptions(discord.ui.View):
     def __init__(self, user):
@@ -90,7 +105,7 @@ class HelpOptions(discord.ui.View):
             await interaction.response.edit_message(
                 embed=discord.Embed(
                     title=f"{select.values[0]} Help!",
-                    description=cog_help[select.values[0]],
+                    description=cog_help,
                     colour=discord.Color.random(),
                 ).set_footer(
                     text="Use `.help <command>` to get additional help on a specific command."
