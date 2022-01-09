@@ -119,7 +119,56 @@ class MyHelpCommand(commands.MinimalHelpCommand):
                 """Hey! it looks like i am missing some permissions. Please give me the following permissions:\n
                             - Send messages and embeds\n-Join and speak in voice channels\n-Ban, Kick and Delete messages\n thats it for the normal stuff... but remember... if i dont respond, its probably because i dont have the perms to do so."""
             )
+    async def send_pages(self):
+        ctx = self.context
 
+        try:
+            m = await ctx.send(embed=Help_Embed(), view=HelpOptions())
+            await asyncio.sleep(120)
+            try:
+                await m.edit("This help session has expired", embed=Help_Embed(), view=None)
+            except:
+                pass
+        except discord.Forbidden:
+            await ctx.send(
+                """Hey! it looks like i am missing some permissions. Please give me the following permissions:\n
+                            - Send messages and embeds\n-Join and speak in voice channels\n-Ban, Kick and Delete messages\n thats it for the normal stuff... but remember... if i dont respond, its probably because i dont have the perms to do so."""
+            )
+
+    async def send_cog_help(self, cog):
+        embed = discord.Embed(
+            title=f"{cog} Commands", colour=discord.Color.random()
+        )
+        if cog.description:
+            embed.description = cog.description
+
+        filtered = await self.filter_commands(cog.get_commands(), sort=True)
+        for command in filtered:
+            embed.add_field(
+                name=command.qualified_name,
+                value=f"{command.description}:" or "No Description:",
+                inline=True,
+            )
+
+        await self.get_destination().send(embed=embed)
+
+    async def send_command_help(self, command):
+        """triggers when a `<prefix>help <command>` is called"""
+        embed = discord.Embed(title=command.qualified_name, colour=discord.Colour.random())
+        embed.add_field(name="**Usage:**", value=self.get_command_signature(command))
+        if command.description:
+            embed.add_field(name="**Description:**", value=command.description, inline=True)
+        if command.aliases:
+            embed.add_field(name="**Aliases:**", value=", ".join([i for i in command.aliases]))
+
+        # use of internals to get the cooldown of the command
+        if command._buckets and (cooldown := command._buckets._cooldown):
+            embed.add_field(
+                name="Cooldown",
+                value=f"{cooldown.rate} per {cooldown.per:.0f} seconds",
+            )
+        await self.get_destination().send(embed=embed)
+        
     async def send_command_help(self, command):
         """triggers when a `<prefix>help <command>` is called"""
         ctx = self.context
