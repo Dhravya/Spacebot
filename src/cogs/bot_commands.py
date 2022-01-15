@@ -2,7 +2,7 @@ import discord
 import time, datetime
 from discord.ext import commands
 from utilities.helpers.utils import Invite
-from utilities.helpers.help import Help_Embed, cog_help
+from utilities.helpers.help import Help_Embed, code_help_generator
 import asyncio
 
 
@@ -16,25 +16,26 @@ class HelpEmbed(discord.Embed):
 
 
 class HelpOptions(discord.ui.View):
-    def __init__(self, user):
+    def __init__(self, user, bot):
         super().__init__()
         self.user = user
+        self.bot = bot
         self.add_item(
             discord.ui.Button(
-                label="Join the server for chill and hangout!",
+                label="Join the Coding Horizon",
                 url="https://dsc.gg/thecodinghorizon",
-                row=1,
+                row=2,
             )
         )
         self.add_item(
-            discord.ui.Button(label="Developer", url="https://dhravya.me", row=1)
+            discord.ui.Button(label="Meet the Developer", url="https://dhravya.me")
         )
         self.add_item(
-            discord.ui.Button(label="Hosted on Epikhost", url="https://epikhost.xyz", row=1, emoji="<:epikhostlogo:859403955531939851>", style= discord.ButtonStyle.success)
+            discord.ui.Button(label="Hosted on Epikhost", url="https://discord.gg/vTpkbk8Q64", row=2, emoji="<:epikhostlogo:859403955531939851>", style= discord.ButtonStyle.success)
         )
 
 
-    @discord.ui.button(label="Delete", style=discord.ButtonStyle.red, emoji="🗑️", row=2)
+    @discord.ui.button(label="Delete", style=discord.ButtonStyle.red, emoji="🗑️", row=3)
     async def delete_button(
         self, button: discord.ui.Button, interaction: discord.Interaction
     ):
@@ -42,45 +43,50 @@ class HelpOptions(discord.ui.View):
             return await interaction.response.send_message("You didn't ask for the help command!", ephemeral=True)
         await interaction.message.delete()
 
+    @discord.ui.button(label="Back to home", style=discord.ButtonStyle.primary, emoji="🏠", row=3)
+    async def back_button(
+        self, button: discord.ui.Button, interaction: discord.Interaction
+    ):
+        if not interaction.user == self.user:
+            return await interaction.response.send_message("You didn't ask for the help command!", ephemeral=True)
+        view  = HelpOptions(user=interaction.user, bot=self.bot)
+        await interaction.message.edit(embed=Help_Embed(), view=view)
+
     @discord.ui.select(
         placeholder="Select a Command Category",
         min_values=1,
         max_values=1,
-        options=[
+        # One option for every cog
+        # Generate a list of cog names with their values being the cog name
+        options = [
             discord.SelectOption(
-                label="Config", description="Configure your bot", emoji="🔧"
+                label="Fun commands", value= "Fun", emoji="😂"
+            ), 
+            discord.SelectOption(
+                label="Utility commands", value= "Utility", emoji="📦"
             ),
             discord.SelectOption(
-                label="Music and Moderation commands",
-                description="Music and moderation commands",
-                emoji="🎶",
+                label="Music commands", value= "Music", emoji="🎵"
             ),
             discord.SelectOption(
-                label="Utility",
-                description="utilities like translate, convert, and more",
-                emoji="⚙️",
+                label="Moderation commands", value= "Moderation", emoji="🔨"
             ),
             discord.SelectOption(
-                label="Fun",
-                description="This includes Fun Commands like AI and slap",
-                emoji="🎠",
+                label="Bot Commands", value= "BotCommands", emoji="🤖"
             ),
             discord.SelectOption(
-                label="Games and Miscellaneous",
-                description="Fun Games and Miscellaneous commands",
-                emoji="🎭",
+                label="Config", value= "Config", emoji="🔧"
             ),
             discord.SelectOption(
-                label="Bot Commands",
-                description="Retrieves info about the user or the server",
-                emoji="❓",
+                label="Discord Together", value= "DiscordTogether", emoji="💬"
             ),
             discord.SelectOption(
-                label="Image Commands",
-                description="Image manipulation commands",
-                emoji="📷",
-            ),
-        ],
+                label="Button Roles", value= "ButtonRoles", emoji="🔘"
+            ), 
+            discord.SelectOption(
+                label="Miscellaneous" , value="Misc", emoji="👀"
+            )
+        ]
     )
     async def select_callback(self, select, interaction):
         if not interaction.user == self.user:
@@ -90,7 +96,7 @@ class HelpOptions(discord.ui.View):
             await interaction.response.edit_message(
                 embed=discord.Embed(
                     title=f"{select.values[0]} Help!",
-                    description=cog_help[select.values[0]],
+                    description=code_help_generator(bot=self.bot , cog_name= select.values[0]),
                     colour=discord.Color.random(),
                 ).set_footer(
                     text="Use `.help <command>` to get additional help on a specific command."
@@ -107,7 +113,7 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
         try:
 
-            view  = HelpOptions(user=ctx.author)
+            view  = HelpOptions(user=ctx.author, bot=ctx.bot)
             m = await ctx.send(embed=Help_Embed(), view=view)
             await asyncio.sleep(60)
             for button in view.children:
@@ -145,15 +151,10 @@ class MyHelpCommand(commands.MinimalHelpCommand):
 
 class BotCommands(commands.Cog):
     def __init__(self, bot: commands.Bot):
+        self.startTime = bot.startTime
         self.bot = bot
         self.bot.help_command = MyHelpCommand()
-        global startTime
-        startTime = time.time()
 
-    @commands.Cog.listener()
-    async def on_ready(self):
-
-        print("yo done")
 
     async def cog_command_error(
         self, ctx: commands.Context, error: commands.CommandError
@@ -168,6 +169,7 @@ class BotCommands(commands.Cog):
 
     @commands.command()
     async def dev(self, ctx):
+        """Get the information about the developer with a lot of helpful links"""
         em = discord.Embed(
             title="Contact the dev!!",
             description="Do you want a personalised bot for your server?\n Or make a website? Or do cool Machine learning stuff? \nWell, then [contact me!!](https://discord.com/channels/@me/512885190251642891)",
@@ -199,7 +201,7 @@ class BotCommands(commands.Cog):
 
     @commands.command(description="Invite our bot to your server!")
     async def invite(self, ctx):
-
+        """Invite our bot to your server!"""
         await ctx.send(
             "***Add SpaceBot to your server now!*** https://dsc.gg/spacebt",
             view=Invite(),
@@ -207,6 +209,7 @@ class BotCommands(commands.Cog):
 
     @commands.command()
     async def suggestdev(self, ctx, *, suggestion):
+        """Suggest a feature for the bot"""
         channel = self.bot.get_channel(924297401500577812)
         embed = discord.Embed(
             colour=discord.Color.blurple(),
@@ -220,6 +223,7 @@ class BotCommands(commands.Cog):
 
     @commands.command()
     async def vote(self, ctx):
+        """Vote for SpaceBot on top.gg"""
         em = discord.Embed(
             title="Support Spacebot!😃🥰",
             description="Here's the vote link! https://top.gg/bot/881862674051391499/vote",
@@ -229,6 +233,7 @@ class BotCommands(commands.Cog):
 
     @commands.command(hidden=True)
     async def nickscan(self, ctx):
+        """Scan for nicknames"""
         message = "**Server | Nick**\n"
         for guild in self.bot.guilds:
             if guild.me.nick != None:
@@ -244,9 +249,9 @@ class BotCommands(commands.Cog):
 
     @commands.command(name="botinfo", aliases=["botstats", "status", "stats"])
     async def botstats(self, ctx):
-        """Bot stats."""
+        """Get statistics about the bot."""
 
-        uptime = str(datetime.timedelta(seconds=int(round(time.time() - startTime))))
+        uptime = str(datetime.timedelta(seconds=int(round(time.time() - self.startTime))))
         # Embed
         em = discord.Embed(color=0x4FFCFA)
         em.set_author(name=f"{self.bot.user} Stats:", icon_url=self.bot.user.avatar.url)

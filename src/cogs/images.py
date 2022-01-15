@@ -1,4 +1,4 @@
-import io, os, discord, random, alexflipnote, aiohttp, contextlib
+import io, os, discord, random, aiohttp, contextlib
 from discord.ext import commands
 from PIL import Image, ImageDraw
 from io import BytesIO
@@ -9,7 +9,6 @@ from PIL import ImageOps
 import pyimgur
 
 im = pyimgur.Imgur(os.getenv("IMGUR_API_KEY"))
-afp = alexflipnote.Client(token = os.getenv("AFP_KEY"))
 
 
 class Images(commands.Cog, name="Image", description="Image Commands"):
@@ -29,11 +28,10 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
         em.description = f"{error}"
         em.color = 0xEE0000
         await ctx.send(embed=em)
-        me = self.bot.get_user(881861601756577832)
-        await me.send(str(ctx.channel.id), embed=em)
 
     @commands.command()
     async def wanted(self, ctx, user: discord.Member = None):
+        """Generates a wanted poster for a user."""
         user = ctx.author if not user else user
 
         wanted = Image.open("utilities/images/wanted.jpg")
@@ -51,6 +49,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
 
     @commands.command()
     async def kill(self, ctx, user: discord.Member = None):
+        """Generates a kill poster for a user."""
         user = ctx.author if not user else user
         amogusimage = Image.open(f"utilities/images/kill2.jfif")
         asset1 = user.avatar.with_format("jpg")
@@ -73,6 +72,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
 
     @commands.command()
     async def disfine(self, ctx, user: discord.Member = None):
+        """Everything is fine, lol ."""
         user = ctx.author if not user else user
 
         wanted = Image.open("utilities/images/finelol.jpeg")
@@ -90,6 +90,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
 
     @commands.command()
     async def affect(self, ctx, user: discord.Member = None):
+        """NOOO ALCHOHOL WONT AFFECT MY CHILD! the child:"""
         user = ctx.author if not user else user
 
         wanted = Image.open("utilities/images/affect.png")
@@ -103,7 +104,8 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
         os.remove("affectlol.jpg")
 
     @commands.command()
-    async def dog(self, ctx):
+    async def dog(self, ctx):  
+        """Doggo"""
 
         request = await self.session.get(
             "https://some-random-api.ml/img/dog"
@@ -118,8 +120,8 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
         await ctx.send(embed=embed)  # Send the embed
 
     @commands.command()
-    async def cat(self, ctx):
-
+    async def cat(self, ctx):   
+        """Cat"""
         request = await self.session.get(
             "https://some-random-api.ml/img/cat"
         )  # Make a request
@@ -148,7 +150,7 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
 
     @commands.command()
     async def catgirl(self, ctx):
-
+        """Get a catgirl image"""
         request = await self.session.get(
             "http://api.nekos.fun:8080/api/neko"
         )  # Make a request
@@ -164,241 +166,11 @@ class Images(commands.Cog, name="Image", description="Image Commands"):
         )
         await ctx.send(embed=embed)  # Send the embed
 
-    @commands.command()
-    async def achievement(self, ctx, *, text: str = ""):
-        """Achievement unlocked"""
-        if text == "":
-            return await ctx.send("You need to specify the achievement")
-        image = await afp.achievement(text=text)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "achievement.png"))
 
-    @commands.command(aliases=["aij"])
-    async def amiajoke(self, ctx, image=None):
-        if image == None:
-            image = ctx.author.avatar.url
-        image = await afp.amiajoke(image)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "amiajoke.png"))
-
-    @commands.command()
-    async def drake(self, ctx, *, text):
-        text = text.split(",")
-        if len(text) != 2:
-            return await ctx.send(
-                "Please specify `,` separated two sentences :page_facing_up:"
-            )
-        image = await afp.drake(text[0], text[1])
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "drake.png"))
-
-    @commands.command()
-    async def bad(self, ctx, image=None):
-        if image == None:
-            image = ctx.author.avatar.url
-        image = await afp.bad(image)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "bad.png"))
-
-    @commands.command()
-    async def birb(self, ctx):
-        image = await afp.birb()
-        # image_bytes = await image.read()
-        await ctx.send(image)
-
-    @commands.command()
-    async def coffee(self, ctx):
-        image = await afp.coffee()
-        # image_bytes = await image.read()
-        await ctx.send(image)
-
-    @commands.command()
-    async def calling(self, ctx, *, text: str = ""):
-        """Call meme"""
-        if text == "":
-            return await ctx.send("You need to specify the text")
-        image = await afp.calling(text=text)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "call.png"))
-
-    @commands.command()
-    async def captcha(self, ctx, *, text: str = ""):
-        """Make a custom fake captcha!!"""
-        if text == "":
-            return await ctx.send("You need to specify the text")
-        image = await afp.captcha(text=text)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "captcha.png"))
-
-    @commands.command()
-    async def colourify(self, ctx, image=None, colour=None, background=None):
-        if image == None:
-            image = ctx.author.avatar.url
-        image = await afp.colourify(image, colour, background)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "colourify.png"))
-
-    @commands.command()
-    async def didumean(self, ctx, *, text):
-        text = text.split(",")
-        if len(text) != 2:
-            return await ctx.send(
-                "Please specify `,` separated two sentences :page_facing_up:"
-            )
-        if len(text[0]) > 39 or len(text[1]) > 39:
-            return await ctx.send("Your text is too big. limit is 40 characters")
-        image = await afp.did_you_mean(text[0], text[1])
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "didumean.png"))
-
-    @commands.command()
-    async def factimage(self, ctx, *, text: str = ""):
-        """Make a custom fake fact image!!"""
-        if text == "":
-            return await ctx.send("You need to specify the text")
-        image = await afp.facts(text=text)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "facts.png"))
-
-    @commands.command(
-        name="filter",
-        aliases=[
-            "blur",
-            "b&w",
-            "deepfry",
-            "sepia",
-            "pixelate",
-            "magik",
-            "jpegify",
-            "wide",
-            "snow",
-            "gay",
-            "communist",
-        ],
-    )
-    async def filter(self, ctx, arg="", image_link=""):
-        """Deepfry avatar"""
-
-        if not await self.check_voted(ctx.author.id) == True:
-            await ctx.send(embed=voteembed, view=Votelink())
-
-        filters = [
-            "b&w",
-            "blur",
-            "charcoal",
-            "communist",
-            "deepfry",
-            "edge",
-            "emboss",
-            "gay",
-            "glitch",
-            "implode",
-            "jpegify",
-            "magik",
-            "pixelate",
-            "primitive",
-            "sepia",
-            "sketch",
-            "snow",
-            "spread",
-            "swirl",
-            "wave",
-            "wide",
-        ]
-        if arg == "--list":
-            return await ctx.send(
-                embed=discord.Embed(title="Filters", description="\n".join(filters))
-            )
-        if arg not in filters:
-            return await ctx.send(
-                "Invalid filter name\nUse `.filter --list` for all options"
-            )
-
-        if not image_link:
-            user = ctx.message.author
-            image_link = user.avatar.url
-        try:
-            user = ctx.message.mentions[0]
-            image_link = user.avatar.url
-        except IndexError:
-            pass
-
-        image = await afp.filter(arg, image_link)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "filtered.png"))
-
-    @commands.command()
-    async def floor(self, ctx, image=None):
-        if image == None:
-            image = ctx.author.avatar.url
-        image = await afp.floor(image)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "floor.png"))
-
-    @commands.command()
-    async def fml(self, ctx):
-        image = await afp.fml()
-        # image_bytes = await image.read()
-        await ctx.send(image)
-
-    @commands.command()
-    async def salty(self, ctx, image=None):
-        if image == None:
-            image = ctx.author.avatar.url
-        image = await afp.salty(image)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "salty.png"))
-
-    @commands.command()
-    async def shame(self, ctx, image=None):
-        if image == None:
-            image = ctx.author.avatar.url
-        image = await afp.shame(image)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "salty.png"))
-
-    @commands.command()
-    async def scroll(self, ctx, *, text: str = ""):
-        if text == "":
-            return await ctx.send("You need to specify the text")
-        image = await afp.scroll(text=text)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "scroll.png"))
-
-    @commands.command()
-    async def ship(
-        self, ctx, member1: discord.Member = None, member2: discord.Member = None
-    ):
-        if member1 == None:
-            member1 = ctx.author
-        if member2 == None:
-            return await ctx.send("You need to specify a user to be shipped with!")
-
-        ppurl1 = member1.avatar.url
-        ppurl2 = member2.avatar.url
-
-        random.seed(member1.id + member2.id)
-        r = random.randint(1, 100)
-        shipper = r / 1.17
-
-        image = await afp.ship(ppurl1, ppurl2)
-        image_bytes = await image.read()
-
-        draw = ImageDraw.Draw(image_bytes)
-        draw.text((28, 36), shipper, fill=(255, 0, 0))
-
-        await ctx.send(file=discord.File(image_bytes, "ship.png"))
-
-    @commands.command()
-    async def what(self, ctx, image=None):
-        if image == None:
-            image = ctx.author.avatar.url
-        image = await afp.what(image)
-        image_bytes = await image.read()
-        await ctx.send(file=discord.File(image_bytes, "what.png"))
 
     @commands.command()
     async def imgur(self, ctx, image_url=None):
+        """Uploads an image to imgur and returns the link"""
         if image_url == None:
             return await ctx.send(
                 "Usage: .imgur <discord image link ending with `.png` or `.jpg`>"
