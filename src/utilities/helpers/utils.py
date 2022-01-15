@@ -14,11 +14,11 @@ def get_prefix(bot, message):  ##first we define get_prefix
         )
         prefix = bot.dbcursor.fetchone()
         if prefix is None:
-            return "."
+            return discord.ext.commands.when_mentioned_or(".")(bot, message)
         else:
             return discord.ext.commands.when_mentioned_or(prefix[0])(bot, message)
     except:
-        return "."
+        return discord.ext.commands.when_mentioned_or(".")(bot, message)
 
 
 def random_percentage():
