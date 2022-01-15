@@ -4,6 +4,7 @@ import aiohttp
 import dotenv
 import os
 import sqlite3
+import time
 
 from rich.traceback import install
 from rich.console import Console
@@ -72,7 +73,7 @@ bot.reddit = asyncpraw.Reddit(
 
 bot.db = sqlite3.connect("database.db")
 bot.dbcursor = bot.db.cursor()
-
+bot.startTime = time.time()
 
 async def session(bot):
     bot.httpsession = aiohttp.ClientSession()
@@ -86,6 +87,7 @@ async def on_ready():
     print("Logged in as")
     bot.console.print(bot.user.name, style="success")
     bot.console.print(bot.user.id, style="success")
+    
     print("------")
     await bot.change_presence(
         status=discord.Status.idle,
@@ -121,8 +123,8 @@ for file in track(files, description="Loading all cogs...."):
     bot.load_extension(file)
 
 
-# Running the bot
+#* Running the bot
 # bot.run(os.getenv("BOT_TOKEN"))
 
-# for testing
+#* for testing
 bot.run(os.getenv("TEST_BOT_TOKEN"))

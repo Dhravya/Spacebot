@@ -9,7 +9,6 @@ from typing import Optional
 from random import choice
 
 from utilities.helpers.utils import random_percentage, Votelink, voteembed
-from utilities.helpers.help import FACES
 
 api_link = "https://evilinsult.com/generate_insult.php?lang=en&type=txt"
 urlaco = "https://acobot-brainshop-ai-v1.p.rapidapi.com/get"
@@ -52,7 +51,7 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
         chosen = random.randint(0, len(insults))
         await ctx.send(insults[chosen])
 
-    @commands.command(name="owofy")
+    @commands.command(name="owofy", description="Converts your message in UwUs. its not worth trying, trust me.")
     async def owofy(self, ctx: commands.Context, *, message):
         """Converts your message in UwUs. its not worth trying, trust me."""
         await ctx.send(
@@ -66,7 +65,7 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
 
     @commands.group(name="cool")
     async def cool(self, ctx: commands.Context, member: discord.Member, error=None):
-
+        """Shows how cool you are. ( ͡° ͜ʖ ͡°)"""
         if member.id == 512885190251642891:
             return await ctx.send(
                 "***YOO ITS SPACEDOGGO THE COOLEST PERSON IN EXISTANCE. 1000% cool.\nHe is so cool he needs to go to hot places in order to not freeze. real struggle.*** \n(Not really please free me i am trapped inside a fking discord bot)"
@@ -92,7 +91,7 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
 
     @commands.command(name="roast")
     async def roast(self, ctx: commands.Context, member: discord.Member):
-
+        """Roasts a user."""
         if not await self.check_voted(ctx.author.id) == True:
             await ctx.send(embed=voteembed, view=Votelink())
 
@@ -386,6 +385,7 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
 
     @commands.command(name="truth")
     async def truth(self, ctx):
+        """Returns a random Truth question to spice up the conversation"""
         truth_file = open("utilities/text_data/truths.txt", mode="r", encoding="utf8")
         truth_file_facts = truth_file.read().split("\n")
         truth_file.close()
@@ -397,7 +397,7 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
 
     @commands.command(name="dare")
     async def dare(self, ctx):
-
+        """Get a dare question """
         dares_file = open("utilities/text_data/dares.txt", mode="r", encoding="utf8")
         dares_file_facts = dares_file.read().split("\n")
         dares_file.close()
@@ -410,7 +410,7 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
     @commands.command(name="ai")
     @commands.cooldown(1, 4, BucketType.user)
     async def ai(self, ctx):
-
+        """Talk to a chatbot - courtesy of brainshop.ai"""
         if not await self.check_voted(ctx.author.id) == True:
             await ctx.send(embed=voteembed, view=Votelink())
 
@@ -600,6 +600,7 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
 
     @commands.command(aliases=["aki"])
     async def akinator(self, ctx):
+        """Akinator is here to guess!"""
         await ctx.send("Akinator is here to guess!")
 
         def check(msg):
@@ -649,6 +650,7 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
         *,
         reason=None,
     ):
+        """Thank someone for something!"""
         prefix = ctx.clean_prefix
         if user_ is None:
             await ctx.send("Thank who? your mom?")
@@ -767,17 +769,19 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
 
     @commands.command(hidden=True)
     async def dahipuri(self, ctx):
+        """WOAH WOAH WOAH YOU FOUND A DAHIPURI"""
         await ctx.send(
             "WOAH WOAH WOAH YOU FOUND A HIDDEN COMMAND\nContext: dahipuri is an indian fast food (my creator spacedoggo likes them a lot. https://g.co/kgs/fktGN6 for more info"
         )
 
-    @commands.group(hidden=True, aliases=["wh"])
+    @commands.group(aliases=["wh"])
     @commands.bot_has_permissions(manage_webhooks=True)
     async def webhook(self, ctx):
+        """Webhook commands to mimic someone or look... dumb using owofy"""
         if ctx.invoked_subcommand is None:
             await ctx.send("Invalid subcommand passed.")
 
-    @webhook.command()
+    @webhook.command(hidden=True)
     async def mimic(
         self, ctx: commands.Context, member: Optional[discord.Member], *, msg: str
     ):
@@ -830,29 +834,6 @@ class Fun(commands.Cog, name="Fun", description="Fun stuff that no one will use"
         await webhook.send(
             humor_langs.owofy(msg), username=member.display_name, avatar_url=avatar
         )
-
-    @commands.command()
-    async def face(self, ctx, number=None):
-        """Japanese Faces at random courtesy of the CIA"""
-        if number is None:
-            await ctx.send(choice(FACES))
-            return
-        if "<@" in str(number):
-            random.seed(number.strip("<@!>"))
-            userface = FACES[random.randint(0, len(FACES))]
-            await ctx.send(userface)
-            return
-        if number.isdigit():
-            if int(number) <= len(FACES):
-                await ctx.send(FACES[int(number) - 1])
-                return
-            else:
-                await ctx.send(
-                    "That number is too large, pick less than {}!".format(len(FACES))
-                )
-                return
-        if not number.isdigit() and "<@!" not in number:
-            await ctx.send(FACES[len(number)])
 
     @commands.command(aliases=["rep", "thank_count", "thanks_count", "thankcount"])
     async def reputation(self, ctx, user: discord.Member = None):

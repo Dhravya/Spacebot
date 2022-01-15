@@ -178,7 +178,7 @@ class ColourConverter(commands.ColourConverter):
             return original_arg
 
 
-class Utility(commands.Cog, name="utilities", description="Useful stuff"):
+class Utility(commands.Cog, description="Useful stuff"):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.bot.topggpy = bot.topggpy

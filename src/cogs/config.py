@@ -71,143 +71,6 @@ class Config(commands.Cog):
         me = self.bot.get_user(881861601756577832)
         await me.send(str(ctx.channel.id), embed=em)
 
-    @commands.command()
-    @commands.has_permissions(ban_members=True)
-    async def wordcensor(self, ctx, *, word):
-        """Censors a word on the server"""
-        m = await ctx.send("...")
-        try:
-            self.bot.dbcursor.execute(
-                f"SELECT filtered_words from Servers where id = {ctx.guild.id}"
-            )
-            new_string = self.bot.dbcursor.fetchone()[0] + "%$" + word + "%$"
-        except TypeError:
-            self.bot.dbcursor.execute(
-                "INSERT INTO Servers(id) VALUES(?)", (ctx.guild.id,)
-            )
-            self.bot.dbcursor.execute(
-                f"SELECT filtered_words from Servers where id = {ctx.guild.id}"
-            )
-            new_string = self.bot.dbcursor.fetchone()[0] + "%$" + word + "%$"
-        self.bot.dbcursor.execute(
-            f"UPDATE Servers SET filtered_words = '{new_string}' WHERE id = {ctx.guild.id}"
-        )
-        self.bot.db.commit()
-        await m.edit(content="Word added to the list of censored words")
-
-    @commands.command()
-    @commands.has_permissions(ban_members=True)
-    async def removecensor(self, ctx, *, word):
-        """Remove censored words"""
-        m = await ctx.send("...")
-        try:
-            previous_words = self.bot.dbcursor.execute(
-                f"SELECT filtered_words from Servers where id = {ctx.guild.id}"
-            )
-
-        except TypeError:
-            self.bot.dbcursor.execute(
-                "INSERT INTO SERVERS(id) VALUES(?)", (ctx.guild.id,)
-            )
-        new_string = previous_words.fetchone()[0].replace("%$" + word + "%$", "")
-        self.bot.dbcursor.execute(
-            f"UPDATE Servers SET filtered_words = '{new_string}' WHERE id = {ctx.guild.id}"
-        )
-        self.bot.db.commit()
-        await m.edit(content="Word removed from the list of censored words")
-
-    @commands.command()
-    @commands.has_permissions(ban_members=True)
-    async def censoredwords(self, ctx):
-        """Get the list of censored words of the server"""
-        try:
-            self.bot.dbcursor.execute(
-                f"SELECT filtered_words from Servers where id = {ctx.guild.id}"
-            )
-        except TypeError:
-            self.bot.dbcursor.execute(
-                "INSERT INTO Servers(id) VALUES(?)", (ctx.guild.id,)
-            )
-            self.bot.dbcursor.execute(
-                f"SELECT filtered_words from Servers where id = {ctx.guild.id}"
-            )
-        words = self.bot.dbcursor.fetchone()[0]
-        words = words.split("%$")
-        await ctx.send("\n".join(words))
-
-    @commands.command()
-    @commands.has_permissions(kick_members=True)
-    async def qotd(self, ctx, channel: discord.TextChannel = None):
-        """Enables the question of the day to be sent to the respective channel
-        This is a great way to keep the server active!"""
-        if channel is None:
-            channel = ctx.channel
-        try:
-            if (
-                self.bot.dbcursor.execute(
-                    f"SELECT qotd from Servers where id = {ctx.guild.id}"
-                ).fetchone()[0]
-                == channel.id
-            ):
-                await ctx.send("QOTD is already enabled on this server!")
-                return
-        except TypeError:
-            self.bot.dbcursor.execute(
-                "INSERT INTO Servers(id) VALUES(?)", (ctx.guild.id,)
-            )
-            if (
-                self.bot.dbcursor.execute(
-                    f"SELECT qotd from Servers where id = {ctx.guild.id}"
-                ).fetchone()[0]
-                == channel.id
-            ):
-                await ctx.send("QOTD is already enabled on this server!")
-                return
-        self.bot.dbcursor.execute(
-            f"UPDATE Servers SET qotd = {channel.id} WHERE id = {ctx.guild.id}"
-        )
-        self.bot.db.commit()
-        await ctx.send("QOTD has been enabled on this server!")
-        await channel.send(
-            "**Question of the day**\n\nWhat is your favourite colour? (SUCCESS!!! HAVE AN ACTIVE COMMUNITY!!)"
-        )
-
-    @commands.command()
-    @commands.has_permissions(kick_members=True)
-    async def fotd(self, ctx, channel: discord.TextChannel = None):
-        """Enables the fact of the day to be sent to the respective channel
-        This is a great way to keep the server active!"""
-        if channel is None:
-            channel = ctx.channel
-        try:
-            if (
-                self.bot.dbcursor.execute(
-                    f"SELECT fotd from Servers where id = {ctx.guild.id}"
-                ).fetchone()[0]
-                == channel.id
-            ):
-                await ctx.send("FOTD is already enabled on this server!")
-                return
-        except TypeError:
-            self.bot.dbcursor.execute(
-                "INSERT INTO Servers(id) VALUES(?)", (ctx.guild.id,)
-            )
-            if (
-                self.bot.dbcursor.execute(
-                    f"SELECT fotd from Servers where id = {ctx.guild.id}"
-                ).fetchone()[0]
-                == channel.id
-            ):
-                await ctx.send("FOTD is already enabled on this server!")
-                return
-        self.bot.dbcursor.execute(
-            f"UPDATE Servers SET fotd = {channel.id} WHERE id = {ctx.guild.id}"
-        )
-        self.bot.db.commit()
-        await ctx.send("FOTD has been enabled on this server!")
-        await channel.send(
-            "**Fact of the day**\n\n(SUCCESS!!! HAVE AN ACTIVE COMMUNITY!!)"
-        )
 
     @commands.command()
     @commands.has_permissions(manage_emojis=True)
@@ -282,7 +145,7 @@ class Config(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     async def memechannel(self, ctx):
         """Automatically adds reactions to memes in the channel"""
-        await ctx.send("Here are all the commands for meme channel. ")
+        await ctx.send("Use .help memechannel for more information.")
 
     @memechannel.command()
     @commands.has_permissions(manage_messages=True)
@@ -307,13 +170,6 @@ class Config(commands.Cog):
         self.bot.db.commit()
         await ctx.send(f"Meme channel set to {channel.mention}")
 
-    # @commands.command()
-    # async def redditfeed_set(self, ctx, channel: discord.TextChannel):
-    #     """Set the channel for reddit feed"""
-    #     self.bot.dbcursor.execute(f"UPDATE Servers SET reddit_feed = {channel.id} WHERE id = {ctx.guild.id}")
-    #     self.bot.db.commit()
-    #     await ctx.send(f"Reddit feed channel set to {channel.mention}")
-
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def starboard_set(self, ctx, channel: discord.TextChannel):
@@ -336,76 +192,6 @@ class Config(commands.Cog):
         )
         self.bot.db.commit()
         await ctx.send(f"Starboard channel set to {channel.mention}")
-
-    @commands.command()
-    @commands.has_permissions(manage_messages=True)
-    async def welcome_setup(self, ctx):
-        """Set the channel for welcome messages"""
-        m = await ctx.send(
-            "Welcome to the welcome setup!! New joiners will be welcomed with a custom message in DM or channel or both. You can make it fancy!"
-        )
-        try:
-            if (
-                self.bot.dbcursor.execute(
-                    f"SELECT welcome_channel from Servers where id = {ctx.guild.id}"
-                ).fetchone()[0]
-                == ctx.channel.id
-            ):
-                return await ctx.send("Welcome channel is already set to this one!")
-        except TypeError:
-            self.bot.dbcursor.execute(
-                "INSERT INTO Servers(id) VALUES(?)", (ctx.guild.id,)
-            )
-        self.bot.dbcursor.execute(
-            f"UPDATE Servers SET welcome_toggle = 1  WHERE id = {ctx.guild.id}"
-        )
-        await ctx.send("Welcome has been turned on for this server")
-        await ctx.send(
-            "Do you want to send the welcome message in a channel? Just type 'yes' or 'no'"
-        )
-        setup1 = await self.bot.wait_for(
-            "message", check=lambda message: message.author == ctx.author
-        )
-        if setup1.content.lower() == "no":
-            self.bot.dbcursor.execute(
-                f"UPDATE Servers SET welcome_channel = 0 WHERE id = {ctx.guild.id}"
-            )
-            await ctx.send("Welcome channel has been turned off for this server")
-        elif setup1.content.lower() == "yes":
-            await ctx.send(
-                "Welcome channel is being set to this one. To change the settings, simply run the setup again in the correct channel, or just use the slash command (which makes things easier for both of us lol)"
-            )
-            self.bot.dbcursor.execute(
-                f"UPDATE Servers SET welcome_channel = {ctx.channel.id} WHERE id = {ctx.guild.id}"
-            )
-            await ctx.send("Welcome channel has been set to " + ctx.channel.mention)
-        else:
-            await ctx.send("Please type 'yes' or 'no'")
-            return
-
-        await ctx.send(
-            "Do you want to send the welcome message in a DM? Just type 'yes' or 'no'"
-        )
-        setup3 = await self.bot.wait_for(
-            "message", check=lambda message: message.author == ctx.author
-        )
-        if setup3.content.lower() == "yes":
-            self.bot.dbcursor.execute(
-                f"UPDATE Servers SET welcome_dm = 1 WHERE id = {ctx.guild.id}"
-            )
-            await ctx.send("Welcome DM has been turned on for this server")
-        elif setup3.content.lower() == "no":
-            self.bot.dbcursor.execute(
-                f"UPDATE Servers SET welcome_dm = 0 WHERE id = {ctx.guild.id}"
-            )
-            await ctx.send("Welcome DM has been turned off for this server")
-        else:
-            await ctx.send("Please type 'yes' or 'no'")
-            return
-
-        self.bot.db.commit()
-        await ctx.send("Welcome setup complete!!")
-
 
 def setup(bot):
     bot.add_cog(Config(bot))

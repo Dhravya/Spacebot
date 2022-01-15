@@ -127,7 +127,7 @@ class Games(commands.Cog):
 
     @commands.command(name="connect4")
     async def connect4(self, ctx: commands.Context, opponent="", width=7, height=6):
-        """Connect4 for the boredom"""
+        """Connect4 for the boredom- Might not work"""
         # -------------- Help section ------------------#
         if opponent == "":
             em = discord.Embed()
