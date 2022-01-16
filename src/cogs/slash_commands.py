@@ -26,7 +26,7 @@ class SlashCommandCog(commands.Cog):
     @slash_command()
     async def help(self,ctx):
         """Get help about the most feature packed bot!!"""
-        view = HelpOptions(user=ctx.author)
+        view = HelpOptions(user=ctx.author, bot=self.bot)
         m = await ctx.respond(embed=Help_Embed(), view= view)
         await asyncio.sleep(60)
             # Disable all buttons 

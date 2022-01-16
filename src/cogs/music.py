@@ -25,7 +25,7 @@ class LavalinkVoiceClient(discord.VoiceClient):
             self.client.lavalink = lavalink.Client(bot.user.id)
             self.client.lavalink.add_node(
                 os.getenv("LAVALINK_HOST"),
-                2333,
+                5074,
                 os.getenv("LAVALINK_PASSWORD"),
                 "in",
                 "default-node",
@@ -84,9 +84,9 @@ class Music(commands.Cog):
         ):  # This ensures the client isn't overwritten during cog reloads.
             bot.lavalink = lavalink.Client(881862674051391499)
             bot.lavalink.add_node(
-                os.getenv("LAVALINK_HOST"),
-                2333,
-                os.getenv("LAVALINK_PASSWORD"),
+                "173.249.9.178",
+                5074,
+                "EpikHostOnTop",
                 "in",
                 "default-node",
             )  # Host, Port, Password, Region, Name
