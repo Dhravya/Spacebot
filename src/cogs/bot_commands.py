@@ -33,6 +33,9 @@ class HelpOptions(discord.ui.View):
         self.add_item(
             discord.ui.Button(label="Hosted on Epikhost", url="https://discord.gg/vTpkbk8Q64", row=2, emoji="<:epikhostlogo:859403955531939851>", style= discord.ButtonStyle.success)
         )
+        self.add_item(
+            discord.ui.Button(label="Privacy Policy", url="https://github.com/dhravya/spacebot/PRIVACY.md", row=1)
+        )
 
 
     @discord.ui.button(label="Delete", style=discord.ButtonStyle.red, emoji="🗑️", row=3)
@@ -246,6 +249,39 @@ class BotCommands(commands.Cog):
                 color=discord.Colour.random(),
             )
         )
+
+    @commands.command()
+    async def privacy_policy(self,ctx):
+        """Shows the privacy policy"""
+
+        embed= discord.Embed(
+            colour = 0x2f3136,
+            title="Privacy Policy",
+            description="""
+            The use of this application ("Bot") in a server
+             requires the collection of some specific user data ("Data"). 
+             The Data collected includes, but is not limited to Discord user ID values. 
+             Use of the Bot is considered an agreement to the terms of this Policy."""
+        )
+        embed.add_field(name="Access to data" , value= """
+        Access to Data is only permitted to Bot's developers, 
+        and only in the scope required for the development, testing, and implementation of features for Bot. 
+        Data is not sold, provided to, or shared with any third party, except where required by law or a Terms of Service agreement. 
+        You can view the data upon request from
+        @Dhravya""", inline=False)
+        embed.add_field(name="Storage of data" , value= """
+        All data collected by the Bot is stored locally on an SQLITE database.
+        The database is secured to prevent external access, 
+        however no guarantee is provided and the Bot owners assume no liability for the unintentional or malicious breach of Data. 
+        In the event of an unauthorised Data access, users will be notified through the Discord client application."""
+        , inline=False)
+        embed.add_field(name="User Rights" , value= """
+        At any time, you have the right to request to view the Data pertaining to your Discord account. 
+        You may submit a request by DMing [SpaceDoggo#0001](https://discord.com/channels/@me/512885190251642891). 
+        You have the right to request the removal of relevant Data."""
+        , inline=False)
+
+        await ctx.send(embed=embed)
 
     @commands.command(name="botinfo", aliases=["botstats", "status", "stats"])
     async def botstats(self, ctx):
