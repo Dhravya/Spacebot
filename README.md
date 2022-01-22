@@ -6,6 +6,9 @@
   <br>
 </h1>
 
+## Spacebot is getting costlier to host! 
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R6R782RBF)
+
 <h4 align="center">Music, Moderation, Fun, Utilities, Games and Fully Configurable.</h4>
 
 <p align="center">
